@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <menuitem name="menu-employee-book"
+    title="Employee Data" icon="fa-user" icon-background="blue"/>
+
+    <menuitem name="menu-employee-friends"
+    parent="menu-employee-book"
+    title="Employees"
+    action="employee.all"/>
+
+    <!--  <menuitem name="menu-employee-income"
+    parent="menu-employee-book"
+    title="Incomes"
+    action="income.all"/>-->
+
+   <action-view name="employee.all" title="employees"
+   model="com.axelor.employee.db.Employee">
+   <view type="grid" name="employee-grid"/>
+   <view type="form" name="employee-form"/>
+   </action-view>
+
+   <!--  <action-view name="income.all" title="incomes" model="com.axelor.employee.db.Employee">
+   <view type="form" name="income-form"/>
+   <view type="grid" name="income-grid"/>
+   </action-view>-->
+
+
+</object-views>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.2.xsd">
+
+  <module name="employee" package="com.axelor.employee.db" />
+
+  <entity name="Employee" cachable="true" table="employee">
+    <string name="fname" required="true" max="255" />
+    <string name="mname" max="255" />
+    <string name="lname"/>
+    <string name="address" multiline="true"></string>
+    <binary name="profile"></binary>
+   <boolean name="status"></boolean>
+
+  </entity>
+</domain-models>

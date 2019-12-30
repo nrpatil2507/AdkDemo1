@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <grid name="employee-grid" title="Employees"
+    model="com.axelor.employee.db.Employee">
+    <field name="fname" />
+    <field name="mname" />
+    <field name="lname" />
+    <field name="address"/>
+    <field name="status"/>
+  </grid>
+
+  <form name="employee-form" title="Employees"
+    model="com.axelor.employee.db.Employee">
+    <panel title="Overview" colSpan="12">
+    <field name="profile"></field>
+      <field name="fullName" readonly="false">
+        <editor>
+          <field name="fname" colSpan="4"/>
+          <field name="mname" colSpan="4"/>
+          <field name="lname" colSpan="4"/>
+        </editor>
+      </field>
+    <field name="" colSpan="6"></field>
+      <field name="address" colspan="10">
+      </field>
+      <field name="status" colSpan="3"/>
+    </panel>
+    <panel sidebar="true">
+      <field name="createdOn"/>
+      <field name="createdBy"/>
+      <field name="updatedOn"/>
+      <field name="updatedBy"/>
+    </panel>
+  </form>
+
+</object-views>
