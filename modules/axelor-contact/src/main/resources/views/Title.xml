@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <grid name="title-grid" title="Titles"
+    model="com.axelor.contact.db.Title">
+
+    <field name="code" />
+    <field name="name" />
+  </grid>
+
+  <form model="com.axelor.contact.db.Title" title="Title" name="title-form">
+    <panel title="Overview">
+    <field name="code" colSpan="3"/>
+     <field name="name" colSpan="3"/>
+  <field name="another" type="integer" min="1" max="100"></field>
+  </panel>
+
+  </form>
+
+  </object-views>

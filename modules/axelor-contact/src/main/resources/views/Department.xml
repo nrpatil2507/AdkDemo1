@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <grid name="dept-grid" title="Dept"
+    model="com.axelor.contact.db.Dept" orderBy="dname">
+    <toolbar>
+    <button name="btnPrint" icon="fa-print" title="Print" onClick="act1"/>
+    <button name="btnExport" icon="fa-rocket" title="Export" onClick="act2"/>
+  </toolbar>
+    <menubar>
+      <menu title="Actions" icon="fa-star" showTitle="false">
+          <item title="Send Greetings" action="act1"/>
+         <item title="Home Page" action="act2"/>
+         <divider/>
+      <item title="Test" action="act3"/>
+      </menu>
+  </menubar>
+  <hilite background="success" if="$contains(dname, 'abc')"/>
+    <field name="code" />
+
+    <field name="dname" />
+
+  </grid>
+
+  <form model="com.axelor.contact.db.Dept" title="Dept" name="dept-form" canAttach="confirm">
+    <panel title="Overview">
+    <field name="code" colSpan="3">
+
+  </field>
+     <field name="dname" colSpan="3">
+        <viewer><![CDATA[
+    <strong>{{record.dname|upper}}</strong>
+    ]]></viewer></field>
+  <field name="another" type="integer" min="1" max="100"></field>
+  </panel>
+  <panel-tabs name="mypanel" title="mytabs">
+  <panel title="profile">
+   <field name="code"/>
+   <field name="name" />
+  </panel>
+  <panel title="login">
+    <field name="name" />
+   </panel>
+  </panel-tabs>
+  <help>this is a Department info form</help>
+  </form>
+
+ <cards name="dept-cards" title="Department" model="com.axelor.contact.db.Dept" >
+  <field name="code" />
+  <field name="dname" />
+
+  <template><![CDATA[
+  <div class="span4 card-image">
+    <img ng-if="hasImage" ng-src="{{$image(null, 'image')}}">
+    <img ng-if="!hasImage" src="img/user.png">
+    <strong>{{fullName}}</strong>
+  </div>
+  <div class="span8">
+    <address>
+      <strong>{{address.street}} {{address.area}}</strong><br>
+      {{address.city}<span ng-if="address.state">, {{address.state}}</span><span ng-if="address.zip"> - {{address.zip}}</span><br>
+      {{address.country.name}}<br>
+      <abbr ng-if="phone" title="Phone">P:</abbr> {{phone}}<br>
+      <abbr ng-if="email" title="Email">E:</abbr> {{email}}<br>
+    </address>
+  </div>
+  ]]></template>
+</cards>
+  </object-views>
