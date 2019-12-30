@@ -41,4 +41,5 @@ allprojects {
 
 dependencies {
   compile project(':modules:axelor-contact')
+ compile project(':modules:axelor-employee')
 }

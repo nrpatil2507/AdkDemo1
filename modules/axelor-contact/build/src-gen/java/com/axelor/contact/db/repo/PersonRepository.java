@@ -34,12 +34,5 @@ public class PersonRepository extends JpaRepository<Person> {
 				.fetchOne();
 	}
 
-	public Person findByEmail(String email) {
-		return Query.of(Person.class)
-				.filter("self.email = :email")
-				.bind("email", email)
-				.fetchOne();
-	}
-
 }
 

@@ -38,7 +38,7 @@
   </panel>
   <panel-tabs name="mypanel" title="mytabs">
   <panel title="profile">
-   <field name="code" />
+   <field name="code"/>
    <field name="name" />
   </panel>
   <panel title="login">
@@ -48,7 +48,7 @@
   <help>this is a Department info form</help>
   </form>
 
- <cards name="dept-cards" title="Department" model="com.axelor.contact.db.Dept">
+ <cards name="dept-cards" title="Department" model="com.axelor.contact.db.Dept" >
   <field name="code" />
   <field name="dname" />
 
@@ -61,7 +61,7 @@
   <div class="span8">
     <address>
       <strong>{{address.street}} {{address.area}}</strong><br>
-      {{address.city}}<span ng-if="address.state">, {{address.state}}</span><span ng-if="address.zip"> - {{address.zip}}</span><br>
+      {{address.city}<span ng-if="address.state">, {{address.state}}</span><span ng-if="address.zip"> - {{address.zip}}</span><br>
       {{address.country.name}}<br>
       <abbr ng-if="phone" title="Phone">P:</abbr> {{phone}}<br>
       <abbr ng-if="email" title="Email">E:</abbr> {{email}}<br>

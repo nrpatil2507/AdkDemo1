@@ -11,6 +11,19 @@
     <field name="phone" />
     <field name="dateOfBirth" />
   </grid>
+  
+<tree name="person-tree" title="Person">
+  <column name="Name" type="string"/>
+  <column name="city" type="string"/>
+  <column name="state" type="string"/>
+  <node model="com.axelor.contact.db.Person">
+    <field name="fullName" as="Name"/>
+  </node>
+  <node model="com.axelor.contact.db.Address" parent="person" draggable="true">
+    <field name="city" as="city"/>
+    <field name="state" as="state"/>
+  </node>
+</tree>
 
   <form name="person-form" title="Contact"
     model="com.axelor.contact.db.Person">
@@ -23,11 +36,6 @@
         </editor>
       </field>
       <field name="dateOfBirth" />
-      <field name="email">
-        <viewer><![CDATA[
-        <a href="mailto:{{record.email}}">{{record.email}}</a>
-        ]]></viewer>
-      </field>
     </panel>
     <panel title="About me">
         <field name="notes" showTitle="false" colSpan="12"/>
@@ -47,12 +55,24 @@
        <field name="service_provider"/>
        <field name="contactno"/>
     </panel-related>
+      <panel-related field="emails"
+      form-view="email-form-popup">
+       <field name="email"/>
+       <field name="primary"/>
+       <field name="optOut"/>
+       <field name="invalid"/>
+
+    </panel-related>
 
     <panel sidebar="true">
       <field name="createdOn"/>
       <field name="createdBy"/>
       <field name="updatedOn"/>
       <field name="updatedBy"/>
+    </panel>
+      <panel sidebar="true" title="Extra">
+      <field name="company"/>
+      <field name="circles" widget="TagSelect"/>
     </panel>
   </form>
 
@@ -75,5 +95,16 @@
        <field name="contactno"/>
     </panel>
   </form>
+   <form name="email-form-popup" title="Email"
+    model="com.axelor.contact.db.Email">
+    <panel title="Email-Detail">
+       <field name="email"/>
+       <field name="primary"/>
+       <field name="optOut"/>
+       <field name="invalid"/>
+    </panel>
+  </form>
+  
+  
 
 </object-views>

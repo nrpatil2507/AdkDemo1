@@ -19,15 +19,16 @@ package com.axelor.contact.db;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,12 +36,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -49,7 +50,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.axelor.auth.db.AuditableModel;
-import com.axelor.db.annotations.HashKey;
 import com.axelor.db.annotations.NameColumn;
 import com.axelor.db.annotations.VirtualColumn;
 import com.axelor.db.annotations.Widget;
@@ -59,7 +59,7 @@ import com.google.common.base.MoreObjects;
 @Cacheable
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "CONTACT_PERSON", indexes = { @Index(columnList = "title"), @Index(columnList = "fullName") })
+@Table(name = "CONTACT_PERSON", indexes = { @Index(columnList = "title"), @Index(columnList = "fullName"), @Index(columnList = "company") })
 public class Person extends AuditableModel {
 
 	@Id
@@ -84,12 +84,6 @@ public class Person extends AuditableModel {
 
 	private LocalDate dateOfBirth;
 
-	@HashKey
-	@NotNull
-	@Size(max = 100)
-	@Column(unique = true)
-	private String email;
-
 	@Widget(title = "About me")
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
@@ -101,6 +95,16 @@ public class Person extends AuditableModel {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Contact> contacts;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Email> emails;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private Set<Circle> circles;
+
+	@Widget(massUpdate = true)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private Company company;
 
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
@@ -174,14 +178,6 @@ public class Person extends AuditableModel {
 
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getNotes() {
@@ -300,6 +296,112 @@ public class Person extends AuditableModel {
 		}
 	}
 
+	public List<Email> getEmails() {
+		return emails;
+	}
+
+	public void setEmails(List<Email> emails) {
+		this.emails = emails;
+	}
+
+	/**
+	 * Add the given {@link Email} item to the {@code emails}.
+	 *
+	 * <p>
+	 * It sets {@code item.person = this} to ensure the proper relationship.
+	 * </p>
+	 *
+	 * @param item
+	 *            the item to add
+	 */
+	public void addEmail(Email item) {
+		if (getEmails() == null) {
+			setEmails(new ArrayList<>());
+		}
+		getEmails().add(item);
+		item.setPerson(this);
+	}
+
+	/**
+	 * Remove the given {@link Email} item from the {@code emails}.
+	 *
+ 	 * @param item
+	 *            the item to remove
+	 */
+	public void removeEmail(Email item) {
+		if (getEmails() == null) {
+			return;
+		}
+		getEmails().remove(item);
+	}
+
+	/**
+	 * Clear the {@code emails} collection.
+	 *
+	 * <p>
+	 * If you have to query {@link Email} records in same transaction, make
+	 * sure to call {@link javax.persistence.EntityManager#flush() } to avoid
+	 * unexpected errors.
+	 * </p>
+	 */
+	public void clearEmails() {
+		if (getEmails() != null) {
+			getEmails().clear();
+		}
+	}
+
+	public Set<Circle> getCircles() {
+		return circles;
+	}
+
+	public void setCircles(Set<Circle> circles) {
+		this.circles = circles;
+	}
+
+	/**
+	 * Add the given {@link Circle} item to the {@code circles}.
+	 *
+	 * @param item
+	 *            the item to add
+	 */
+	public void addCircle(Circle item) {
+		if (getCircles() == null) {
+			setCircles(new HashSet<>());
+		}
+		getCircles().add(item);
+	}
+
+	/**
+	 * Remove the given {@link Circle} item from the {@code circles}.
+	 *
+ 	 * @param item
+	 *            the item to remove
+	 */
+	public void removeCircle(Circle item) {
+		if (getCircles() == null) {
+			return;
+		}
+		getCircles().remove(item);
+	}
+
+	/**
+	 * Clear the {@code circles} collection.
+	 *
+	 */
+	public void clearCircles() {
+		if (getCircles() != null) {
+			getCircles().clear();
+		}
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	public String getAttrs() {
 		return attrs;
 	}
@@ -319,14 +421,12 @@ public class Person extends AuditableModel {
 			return Objects.equals(this.getId(), other.getId());
 		}
 
-		if (!Objects.equals(getEmail(), other.getEmail())) return false;
-
-		return true;
+		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(-1907849355, this.getEmail());
+		return 31;
 	}
 
 	@Override
@@ -336,7 +436,6 @@ public class Person extends AuditableModel {
 			.add("firstName", getFirstName())
 			.add("lastName", getLastName())
 			.add("dateOfBirth", getDateOfBirth())
-			.add("email", getEmail())
 			.omitNullValues()
 			.toString();
 	}

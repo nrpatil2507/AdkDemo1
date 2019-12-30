@@ -23,13 +23,15 @@
     ]]></string>
 
     <date name="dateOfBirth" />
-
-    <string name="email" required="true" unique="true" max="100" />
-
     <string name="notes" title="About me" large="true" formula="true"/>
 
     <one-to-many name="addresses" ref="Address" mappedBy="person" />
     <one-to-many name="contacts" ref="Contact" mappedBy="person"/>
+    <one-to-many name="emails" ref="Email" mappedBy="person" />
+    <many-to-many name="circles" ref="Circle" />
+    <many-to-one name="company" ref="Company" massUpdate="true"/>
+
+
     <finder-method name="findByName" using="fullName" />
     <finder-method name="findByEmail" using="email" />
   </entity>
