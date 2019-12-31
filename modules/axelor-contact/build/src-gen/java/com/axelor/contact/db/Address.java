@@ -42,7 +42,7 @@ import com.google.common.base.MoreObjects;
 
 @Entity
 @Cacheable
-@Table(name = "address", indexes = { @Index(columnList = "person") })
+@Table(name = "address", indexes = { @Index(columnList = "person"), @Index(columnList = "country") })
 public class Address extends AuditableModel {
 
 	@Id
@@ -67,7 +67,8 @@ public class Address extends AuditableModel {
 
 	private String state;
 
-	private String country;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private Country country;
 
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
@@ -135,11 +136,11 @@ public class Address extends AuditableModel {
 		this.state = state;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
@@ -179,7 +180,6 @@ public class Address extends AuditableModel {
 			.add("city", getCity())
 			.add("zip", getZip())
 			.add("state", getState())
-			.add("country", getCountry())
 			.omitNullValues()
 			.toString();
 	}

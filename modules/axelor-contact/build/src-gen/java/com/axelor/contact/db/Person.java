@@ -84,11 +84,22 @@ public class Person extends AuditableModel {
 
 	private LocalDate dateOfBirth;
 
+	@Widget(image = true, title = "Photo", help = "Max size 4MB.")
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	private byte[] image;
+
 	@Widget(title = "About me")
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@Type(type = "text")
 	private String notes;
+
+	@VirtualColumn
+	@Access(AccessType.PROPERTY)
+	private String email;
+
+	private String phone;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Address> addresses;
@@ -180,12 +191,53 @@ public class Person extends AuditableModel {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	/**
+	 * Max size 4MB.
+	 *
+	 * @return the property value
+	 */
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
 	public String getNotes() {
 		return notes;
 	}
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	public String getEmail() {
+		try {
+			email = computeEmail();
+		} catch (NullPointerException e) {
+			Logger logger = LoggerFactory.getLogger(getClass());
+			logger.error("NPE in function field: getEmail()", e);
+		}
+		return email;
+	}
+
+	protected String computeEmail() {
+		if (emails == null || emails.isEmpty()) return null;
+		for (Email email : emails) if (email.getPrimary() == Boolean.TRUE) return email.getEmail();
+		return emails.get(0).getEmail();
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public List<Address> getAddresses() {
@@ -436,6 +488,7 @@ public class Person extends AuditableModel {
 			.add("firstName", getFirstName())
 			.add("lastName", getLastName())
 			.add("dateOfBirth", getDateOfBirth())
+			.add("phone", getPhone())
 			.omitNullValues()
 			.toString();
 	}

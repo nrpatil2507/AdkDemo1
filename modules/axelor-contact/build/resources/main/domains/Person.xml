@@ -6,8 +6,8 @@
 
   <module name="person" package="com.axelor.contact.db"/>
 
-  <entity name="Person" sequential="true" cachable="true">
-    <many-to-one name="title" ref="Title"/>
+  <entity name="Person" sequential="true" cachable="true" repository="abstract">
+   <many-to-one name="title" ref="Title"/>
     <string name="firstName" required="true" />
     <string name="lastName" required="true" />
 
@@ -23,7 +23,15 @@
     ]]></string>
 
     <date name="dateOfBirth" />
+    <binary name="image" title="Photo" help="Max size 4MB." image="true"/>
     <string name="notes" title="About me" large="true" formula="true"/>
+       <string name="email"><![CDATA[
+    if (emails == null || emails.isEmpty()) return null;
+    for (Email email : emails) if (email.getPrimary() == Boolean.TRUE) return email.getEmail();
+    return emails.get(0).getEmail();
+    ]]></string>
+
+    <string name="phone"></string>
 
     <one-to-many name="addresses" ref="Address" mappedBy="person" />
     <one-to-many name="contacts" ref="Contact" mappedBy="person"/>

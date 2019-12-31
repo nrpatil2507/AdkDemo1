@@ -12,10 +12,10 @@
     title="Employees"
     action="employee.all"/>
 
-    <!--  <menuitem name="menu-employee-income"
+     <menuitem name="menu-employee-income"
     parent="menu-employee-book"
     title="Incomes"
-    action="income.all"/>-->
+    action="income.all"/>
 
    <action-view name="employee.all" title="employees"
    model="com.axelor.employee.db.Employee">
@@ -23,10 +23,10 @@
    <view type="form" name="employee-form"/>
    </action-view>
 
-   <!--  <action-view name="income.all" title="incomes" model="com.axelor.employee.db.Employee">
+    <action-view name="income.all" title="incomes" model="com.axelor.employee.db.Employee">
    <view type="form" name="income-form"/>
    <view type="grid" name="income-grid"/>
-   </action-view>-->
+   </action-view>
 
 
 </object-views>

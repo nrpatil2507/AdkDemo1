@@ -16,11 +16,16 @@
     parent="menu-contact-book"
     title="All Title"
     action="title.all"/>
-    
+
     <menuitem name="menu-contact-treeview"
     parent="menu-contact-book"
     title="treeview"
     action="tree.all"/>
+
+     <menuitem name="menu-contact-kanban"
+    parent="menu-contact-book"
+    title="KanbanView"
+    action="kanban.all"/>
 
     <menuitem name="menu-Example"
     title="department" icon="fa-rocket" icon-background="orange" action="dept.all" />
@@ -30,12 +35,21 @@
     model="com.axelor.contact.db.Person">
     <view type="grid" name="person-grid"/>
     <view type="form" name="person-form"/>
+    <view type="cards" name="person-cards"/>
+    <context name="json-enhance" expr="true"/>
+   <!--<view-param name="details-view" value="true" />  -->
   </action-view>
-  
+
    <action-view name="tree.all"
     title="Persons"
     model="com.axelor.contact.db.Person">
     <view type="tree" name="person-tree"/>
+  </action-view>
+
+   <action-view name="kanban.all"
+    title="Phones"
+    model="com.axelor.contact.db.Person">
+    <view type="kanban" name="phone-kanban"/>
   </action-view>
 
    <action-view name="title.all" title="Titles"
@@ -71,11 +85,12 @@
     <view type="grid" name="circle-grid"/>
     <view type="form" name="circle-form"/>
   </action-view>
-     <menuitem name="menu-contact-company-tree" parent="menu-contact-config"
+
+    <menuitem name="menu-contact-company-tree" parent="menu-contact-config"
     title="Companies"
     action="contact.company"/>
 
-  <action-view name="contact.company" title="Company" model="com.axelor.contact.db.Company">
+    <action-view name="contact.company" title="Company" model="com.axelor.contact.db.Company">
     <view type="grid" name="company-grid"/>
     <view type="form" name="company-form"/>
   </action-view>

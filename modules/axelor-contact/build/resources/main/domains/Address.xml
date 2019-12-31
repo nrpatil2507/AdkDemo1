@@ -13,7 +13,7 @@
     <string name="city" />
     <string name="zip" />
     <string name="state" />
-    <string name="country" />
+    <many-to-one name="country" ref="Country"></many-to-one>
   </entity>
 
 </domain-models>

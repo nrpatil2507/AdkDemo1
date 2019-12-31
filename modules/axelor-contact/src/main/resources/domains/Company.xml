@@ -12,5 +12,4 @@
     <one-to-many name="employees" ref="Person" mappedBy="company" />
     <string name="notes" multiline="true"/>
   </entity>
-
 </domain-models>

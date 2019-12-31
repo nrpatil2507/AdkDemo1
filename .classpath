@@ -41,6 +41,11 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="/axelor-project">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/home/axelor/.gradle/caches/modules-2/files-2.1/com.axelor/axelor-web/5.2.3/b3e096ece98a582e08276db0eed368b530db9627/axelor-web-5.2.3-sources.jar" kind="lib" path="/home/axelor/.gradle/caches/modules-2/files-2.1/com.axelor/axelor-web/5.2.3/c05c983b1b82c06a02f2c8002930b83efe6af5a5/axelor-web-5.2.3.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>

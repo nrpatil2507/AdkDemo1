@@ -12,5 +12,6 @@
    <decimal name="amount"></decimal>
    <date name="paydate"></date>
    <one-to-one ref="Employee" name="employee" required="true"></one-to-one>
+   <many-to-one name="employees" ref="Employee"></many-to-one>
   </entity>
 </domain-models>

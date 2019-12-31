@@ -13,6 +13,7 @@
     <string name="address" multiline="true"></string>
     <binary name="profile"></binary>
    <boolean name="status"></boolean>
-
+   <one-to-one ref="Income" name="income" mappedBy="employee" ></one-to-one>
+   <one-to-many name="incomes" ref="Income" mappedBy="employees"/>
   </entity>
 </domain-models>

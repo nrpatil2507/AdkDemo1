@@ -15,22 +15,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.axelor.contact.db.repo;
+package com.axelor.project.db.repo;
 
-import com.axelor.contact.db.Person;
 import com.axelor.db.JpaRepository;
 import com.axelor.db.Query;
+import com.axelor.project.db.ProjectWork;
 
-public class PersonRepository extends JpaRepository<Person> {
+public class ProjectWorkRepository extends JpaRepository<ProjectWork> {
 
-	public PersonRepository() {
-		super(Person.class);
+	public ProjectWorkRepository() {
+		super(ProjectWork.class);
 	}
 
-	public Person findByName(String fullName) {
-		return Query.of(Person.class)
-				.filter("self.fullName = :fullName")
-				.bind("fullName", fullName)
+	public ProjectWork findByName(String name) {
+		return Query.of(ProjectWork.class)
+				.filter("self.name = :name")
+				.bind("name", name)
 				.fetchOne();
 	}
 

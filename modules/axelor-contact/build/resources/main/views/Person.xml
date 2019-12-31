@@ -1,95 +1,169 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
-  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
 
-  <grid name="person-grid" title="Contact"
-    model="com.axelor.contact.db.Person">
-    <field name="fullName" />
-    <field name="email" />
-    <field name="phone" />
-    <field name="dateOfBirth" />
-  </grid>
-
-  <form name="person-form" title="Contact"
-    model="com.axelor.contact.db.Person">
-    <panel title="Overview">
-      <field name="fullName" readonly="false">
-        <editor>
-          <field name="title" colSpan="3"/>
-          <field name="firstName" colSpan="4"/>
-          <field name="lastName" colSpan="5"/>
-        </editor>
-      </field>
-      <field name="dateOfBirth" />
-    </panel>
-    <panel title="About me">
-        <field name="notes" showTitle="false" colSpan="12"/>
-    </panel>
-    <panel-related field="addresses"
-      form-view="address-form-popup">
+  <grid name="person-grid" title="Contacts" model="com.axelor.contact.db.Person">
+    <hilite background="warning" if="$contains(lastName, 'bbb')"/>
+    <field name="fullName"/>
+    <field name="firstName">
+      <hilite color="danger" strong="true" if="$contains(firstName, 'aaa')"/>
+    </field>
+    <field name="lastName"/>
+    <field name="email"/>
+    <field name="phone"/>
+    <field name="company"/>
+    <field name="dateOfBirth">
+      <hilite color="danger" strong="true" if="$moment().diff(dateOfBirth, 'years') &lt; 18"/>
+    </field>
+    <field name="addresses">
+      <grid title="Address List">
         <field name="street"/>
         <field name="area"/>
         <field name="city"/>
-        <field name="state"/>
+      </grid>
+      <form cols="4" title="Address">
+        <field name="street"/>
+        <field name="area"/>
+        <field name="city"/>
         <field name="zip"/>
         <field name="country"/>
-    </panel-related>
-     <panel-related field="contacts"
-      form-view="contact-form-popup">
-       <field name="phonetype"/>
-       <field name="service_provider"/>
-       <field name="contactno"/>
-    </panel-related>
-      <panel-related field="emails"
-      form-view="email-form-popup">
-       <field name="email"/>
-       <field name="primary"/>
-       <field name="optOut"/>
-       <field name="invalid"/>
+        <button onClick="action-contact-address-about" title="Click Me!" name="clickMe"/>
+      </form>
+    </field>
+  </grid>
 
-    </panel-related>
+  <selection name="phone.type.selection">
+    <option value="Mobile">Mobile</option>
+    <option value="Office">Office</option>
+    <option value="Home">Home</option>
+    <option value="Other">Other</option>
+  </selection>
 
+  <form name="person-form" title="Contact" model="com.axelor.contact.db.Person" css="panel-blue">
+    <panel title="Personal" css="panel-red">
+      <panel colSpan="4">
+        <field name="image" showTitle="false" colSpan="12"/>
+      </panel>
+      <panel colSpan="8">
+        <field name="fullName" title="Name" readonly="false" colSpan="12">
+          <editor x-show-titles="false">
+            <field name="title" widget="SuggestBox" colSpan="2"/>
+            <field name="firstName" colSpan="5"/>
+            <field name="lastName" colSpan="5"/>
+          </editor>
+        </field>
+      <field name="dateOfBirth" colSpan="7"/>
+      </panel>
+    </panel>
+    <panel title="Contacts" css="panel-green">
+      <field name="emails">
+        <viewer><![CDATA[
+        <a href="mailto:{{record.email}}">{{record.email}}</a>
+        ]]></viewer>
+        <editor layout="table" x-show-titles="false">
+          <field name="email" />
+          <field name="primary" widget="toggle" x-icon="fa-star-o" x-icon-active="fa-star" x-exclusive="true" />
+          <field name="optOut" widget="toggle" x-icon="fa-ban" />
+          <field name="invalid" widget="toggle" x-icon="fa-exclamation-circle" />
+        </editor>
+      </field>
+      <field name="phones">
+        <viewer><![CDATA[
+        <a href="tel:{{record.phone}}">{{record.phone}}</a> <span class="muted" ng-if="record.phoneType">({{record.phoneType}})</span>
+        ]]></viewer>
+        <editor layout="table" x-show-titles="false">
+          <field name="phoneType" width="100px" selection="phone.type.selection" />
+          <field name="phone" css="border-left-none"/>
+          <field name="primary" widget="toggle" x-icon="fa-star-o" x-icon-active="fa-star" x-exclusive="true"/>
+        </editor>
+      </field>
+      <field name="addresses" colSpan="12" css="address-list">
+        <viewer><![CDATA[
+        <address>
+        {{record.street}} {{record.area}}<br>
+        {{record.city}}, {{record.state}} - {{record.zip}}<br>
+        {{record.country.name}}
+        </address>
+        ]]>
+        </viewer>
+        <editor x-show-titles="false">
+          <field name="street" colSpan="12"/>
+          <field name="area" colSpan="12"/>
+          <field name="city" colSpan="4"/>
+          <field name="state" colSpan="4"/>
+          <field name="zip" colSpan="4"/>
+          <field name="country" widget="SuggestBox" colSpan="12"/>
+        </editor>
+      </field>
+    </panel>
+    <panel title="Notes">
+      <field name="notes" showTitle="false" colSpan="12"/>
+    </panel>
     <panel sidebar="true">
       <field name="createdOn"/>
-      <field name="createdBy"/>
       <field name="updatedOn"/>
-      <field name="updatedBy"/>
     </panel>
-      <panel sidebar="true" title="Extra">
+    <panel sidebar="true" title="Extra">
       <field name="company"/>
       <field name="circles" widget="TagSelect"/>
     </panel>
   </form>
 
-  <form name="address-form-popup" title="Address"
-    model="com.axelor.contact.db.Address">
-    <panel title="Overview">
-      <field name="street" />
-      <field name="area" />
-      <field name="city" />
-      <field name="zip" />
-      <field name="state" />
-      <field name="country" />
-    </panel>
-  </form>
-  <form name="contact-form-popup" title="Contact"
-    model="com.axelor.contact.db.Contact">
-    <panel title="Contact-Detail">
-       <field name="phonetype"/>
-       <field name="service_provider"/>
-       <field name="contactno"/>
-    </panel>
-  </form>
-   <form name="email-form-popup" title="Email"
-    model="com.axelor.contact.db.Email">
-    <panel title="Email-Detail">
-       <field name="email"/>
-       <field name="primary"/>
-       <field name="optOut"/>
-       <field name="invalid"/>
-    </panel>
-  </form>
+  <cards name="person-cards" title="Contacts" model="com.axelor.contact.db.Person" orderBy="fullName">
+    <field name="fullName" />
+    <field name="phone" />
+    <field name="email" />
+    <field name="address" />
+    <field name="hasImage" />
+    <template><![CDATA[
+      <div class="span4 card-image">
+        <img ng-if="hasImage" ng-src="{{$image(null, 'image')}}">
+        <img ng-if="!hasImage" src="img/user.png">
+        <strong>{{fullName}}</strong>
+      </div>
+      <div class="span8">
+        <address>
+          <strong>{{address.street}} {{address.area}}</strong><br>
+          {{address.city}}<span ng-if="address.state">, {{address.state}}</span><span ng-if="address.zip"> - {{address.zip}}</span><br>
+          {{address.country.name}}<br>
+          <abbr ng-if="phone" title="Phone">P:</abbr> {{phone}}<br>
+          <abbr ng-if="email" title="Email">E:</abbr> {{email}}<br>
+        </address>
+      </div>
+    ]]></template>
+  </cards>
+
+  <tree name="person-tree" title="Person">
+  <column name="Name" type="string"/>
+  <column name="city" type="string"/>
+  <column name="state" type="string"/>
+  <node model="com.axelor.contact.db.Person">
+    <field name="fullName" as="Name"/>
+  </node>
+  <node model="com.axelor.contact.db.Address" parent="person" draggable="true">
+    <field name="city" as="city"/>
+    <field name="state" as="state"/>
+  </node>
+</tree>
+
+<kanban name="phone-kanban" title="Phone Types" model="com.axelor.contact.db.Contact"
+    columnBy="phonetype" sequenceBy="priority" onNew="project.task.kanban.on.new" limit="10">
+    <field name="service_provider"/>
+    <field name="contactno"/>
+    <field name="fullName"/>
+    <hilite color="danger" if="progress == 0" />
+    <hilite color="success" if="progress == 100" />
+    <hilite color="info" if="progress >= 50" />
+    <hilite color="warning" if="progress > 0" />
+    <template><![CDATA[
+    <h4>{{service_provider}}</h4>
+    <img ng-if="user" ng-src="{{$image('user', 'image')}}">
+    <div class="card-body">{{notes}}</div>
+    <div class="card-footer">
+      <i class='fa fa-clock-o'></i> <span>{{startDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+    </div>
+    ]]></template>
+  </kanban>
 
 </object-views>

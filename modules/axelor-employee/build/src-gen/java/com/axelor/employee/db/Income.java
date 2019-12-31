@@ -30,6 +30,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -44,7 +45,7 @@ import com.google.common.base.MoreObjects;
 
 @Entity
 @Cacheable
-@Table(name = "income", indexes = { @Index(columnList = "employee") })
+@Table(name = "income", indexes = { @Index(columnList = "employee"), @Index(columnList = "employees") })
 public class Income extends AuditableModel {
 
 	@Id
@@ -63,6 +64,9 @@ public class Income extends AuditableModel {
 	@NotNull
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Employee employee;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private Employee employees;
 
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
@@ -112,6 +116,14 @@ public class Income extends AuditableModel {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+
+	public Employee getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(Employee employees) {
+		this.employees = employees;
 	}
 
 	public String getAttrs() {
