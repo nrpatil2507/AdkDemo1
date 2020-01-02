@@ -6,14 +6,12 @@
 
   <module name="employee" package="com.axelor.employee.db" />
 
-  <entity name="Employee" cachable="true" table="employee">
-    <string name="fname" required="true" max="255" />
-    <string name="mname" max="255" />
-    <string name="lname"/>
+  <entity name="Employee" cachable="true">
+    <string name="firstName" required="true" max="255" />
+    <string name="lastName" max="255" />
     <string name="address" multiline="true"></string>
     <binary name="profile"></binary>
    <boolean name="status"></boolean>
    <one-to-one ref="Income" name="income" mappedBy="employee" ></one-to-one>
-   <one-to-many name="incomes" ref="Income" mappedBy="employees"/>
   </entity>
 </domain-models>

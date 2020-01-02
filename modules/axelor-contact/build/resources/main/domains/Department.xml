@@ -8,6 +8,8 @@
   <entity name="Dept" cachable="true" table="dept">
     <string name="code" required="true" unique="true" min="2" />
     <string name="dname" required="true" unique="true" />
+    <integer name="priority"></integer>
+    <string name="status" selection="dept.type.selection"></string>
     <finder-method name="findbycode" using="code"/>
   </entity>
 </domain-models>

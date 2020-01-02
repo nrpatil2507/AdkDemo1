@@ -22,13 +22,21 @@
     title="treeview"
     action="tree.all"/>
 
-     <menuitem name="menu-contact-kanban"
+    <menuitem name="menu-contact-kanban"
     parent="menu-contact-book"
     title="KanbanView"
     action="kanban.all"/>
 
     <menuitem name="menu-Example"
-    title="department" icon="fa-rocket" icon-background="orange" action="dept.all" />
+    title="department"
+    icon="fa-rocket"
+    icon-background="orange"
+    action="dept.all" />
+
+    <menuitem title="Dept KanbanView"
+     name="menu-dept-kanban"
+     parent="menu-Example"
+     action="dept.all"/>
 
   <action-view name="contact.all"
     title="Peoples"
@@ -48,7 +56,7 @@
 
    <action-view name="kanban.all"
     title="Phones"
-    model="com.axelor.contact.db.Person">
+    model="com.axelor.contact.db.Contact">
     <view type="kanban" name="phone-kanban"/>
   </action-view>
 
@@ -63,6 +71,7 @@
    <view type="grid" name="dept-grid"/>
     <view type="form" name="dept-form"/>
    <view type="cards" name="dept-cards"/>
+   <view type="kanban" name="dept-kanban"/>
    </action-view>
 
      <menuitem name="menu-contact-config" parent="menu-contact-book"

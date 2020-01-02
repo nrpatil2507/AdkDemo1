@@ -6,7 +6,7 @@
 
   <module name="person" package="com.axelor.contact.db"/>
 
-  <entity name="Person" sequential="true" cachable="true" repository="abstract">
+  <entity name="Person">
    <many-to-one name="title" ref="Title"/>
     <string name="firstName" required="true" />
     <string name="lastName" required="true" />
@@ -31,7 +31,7 @@
     return emails.get(0).getEmail();
     ]]></string>
 
-    <string name="phone"></string>
+
 
     <one-to-many name="addresses" ref="Address" mappedBy="person" />
     <one-to-many name="contacts" ref="Contact" mappedBy="person"/>

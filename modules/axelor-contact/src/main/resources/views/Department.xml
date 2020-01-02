@@ -3,7 +3,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
-
+<selection name="dept.type.selection">
+    <option value="Active">Active</option>
+    <option value="Deactive">Deactive</option>
+    <option value="idle">Idle</option>
+    <option value="Other">Other</option>
+  </selection>
   <grid name="dept-grid" title="Dept"
     model="com.axelor.contact.db.Dept" orderBy="dname">
     <toolbar>
@@ -20,21 +25,18 @@
   </menubar>
   <hilite background="success" if="$contains(dname, 'abc')"/>
     <field name="code" />
-
     <field name="dname" />
-
   </grid>
 
   <form model="com.axelor.contact.db.Dept" title="Dept" name="dept-form" canAttach="confirm">
     <panel title="Overview">
-    <field name="code" colSpan="3">
-
-  </field>
-     <field name="dname" colSpan="3">
-        <viewer><![CDATA[
+    <field name="code" colSpan="3"/>
+    <field name="dname" colSpan="3">
+   <viewer><![CDATA[
     <strong>{{record.dname|upper}}</strong>
     ]]></viewer></field>
-  <field name="another" type="integer" min="1" max="100"></field>
+    <field name="status"></field>
+    <field name="priority"></field>
   </panel>
   <panel-tabs name="mypanel" title="mytabs">
   <panel title="profile">
@@ -51,7 +53,6 @@
  <cards name="dept-cards" title="Department" model="com.axelor.contact.db.Dept" >
   <field name="code" />
   <field name="dname" />
-
   <template><![CDATA[
   <div class="span4 card-image">
     <img ng-if="hasImage" ng-src="{{$image(null, 'image')}}">
@@ -69,4 +70,21 @@
   </div>
   ]]></template>
 </cards>
+
+<kanban name="dept-kanban" title="deptTypes" model="com.axelor.contact.db.Dept"
+    columnBy="status" sequenceBy="priority" limit="10">
+    <field name="code"/>
+    <field name="dname"/>
+    <hilite color="danger" if="progress == 0" />
+    <hilite color="success" if="progress == 100" />
+    <hilite color="info" if="progress >= 50" />
+    <hilite color="warning" if="progress > 0" />
+    <template><![CDATA[
+    <h4>{{dname}}</h4>
+    <div class="card-body">{{dname}}</div>
+    <div class="card-footer">
+      <i class='fa fa-clock-o'></i> <span>{{code}}</span>
+    </div>
+    ]]></template>
+  </kanban>
   </object-views>

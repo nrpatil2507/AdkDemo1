@@ -11,7 +11,13 @@
     </field>
     <field name="lastName"/>
     <field name="email"/>
-    <field name="phone"/>
+    <field name="contacts">
+     <grid title="Contact List">
+        <field name="phonetype"/>
+        <field name="service_provider"/>
+        <field name="contactno"/>
+      </grid>
+      </field>
     <field name="company"/>
     <field name="dateOfBirth">
       <hilite color="danger" strong="true" if="$moment().diff(dateOfBirth, 'years') &lt; 18"/>
@@ -68,13 +74,15 @@
           <field name="invalid" widget="toggle" x-icon="fa-exclamation-circle" />
         </editor>
       </field>
-      <field name="phones">
+      <field name="contacts">
         <viewer><![CDATA[
-        <a href="tel:{{record.phone}}">{{record.phone}}</a> <span class="muted" ng-if="record.phoneType">({{record.phoneType}})</span>
+        <a href="tel:{{record.contact}}">{{record.contactno}}</a> <span class="muted" ng-if="record.phonetype">({{record.phonetype}})</span>
         ]]></viewer>
         <editor layout="table" x-show-titles="false">
-          <field name="phoneType" width="100px" selection="phone.type.selection" />
-          <field name="phone" css="border-left-none"/>
+          <field name="phonetype" width="100px" selection="phone.type.selection" colSpan="4" />
+          <field name="service_provider" width="100px" colSpan="4"></field>
+          <field name="contactno" css="border-left-none" colSpan="4"/>
+          <field name="numberCnt" colSpan="4"></field>
           <field name="primary" widget="toggle" x-icon="fa-star-o" x-icon-active="fa-star" x-exclusive="true"/>
         </editor>
       </field>
@@ -147,21 +155,19 @@
   </node>
 </tree>
 
-<kanban name="phone-kanban" title="Phone Types" model="com.axelor.contact.db.Contact"
-    columnBy="phonetype" sequenceBy="priority" onNew="project.task.kanban.on.new" limit="10">
+<kanban name="phone-kanban" title="Phone Types" model="com.axelor.contact.db.Person"
+    columnBy="phonetype" sequenceBy="numberCnt" limit="10">
     <field name="service_provider"/>
     <field name="contactno"/>
-    <field name="fullName"/>
     <hilite color="danger" if="progress == 0" />
     <hilite color="success" if="progress == 100" />
     <hilite color="info" if="progress >= 50" />
     <hilite color="warning" if="progress > 0" />
     <template><![CDATA[
-    <h4>{{service_provider}}</h4>
-    <img ng-if="user" ng-src="{{$image('user', 'image')}}">
-    <div class="card-body">{{notes}}</div>
+    <h4>{{fullname}}</h4>
+    <div class="card-body">{{service_provider}}</div>
     <div class="card-footer">
-      <i class='fa fa-clock-o'></i> <span>{{startDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+    <i class='fa fa-phone'></i> <span>{{contactno}}</span>
     </div>
     ]]></template>
   </kanban>

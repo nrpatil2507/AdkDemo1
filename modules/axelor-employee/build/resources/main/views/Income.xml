@@ -7,23 +7,16 @@
   <grid name="income-grid" title="incomes" model="com.axelor.employee.db.Income">
     <field name="employee"></field>
     <field name="amount"></field>
-    <field name="paydate"></field>
+    <field name="payDate"></field>
     <field name="paymentType"></field>
   </grid>
 
-  <form name="income-form" title="incomes" model="com.axelor.employee.db.Income">
-
-    <panel-related field="employees" >
-      <field name="fname" />
-      <field name="mname" />
-      <field name="lname" />
-      <field name="address" />
-      <field name="status" />
-    </panel-related>
+  <form name="income-form" title="incomeforms" model="com.axelor.employee.db.Income">
     <panel title="Overview" colSpan="12">
+    <field name="employee"></field>
       <field name="amount" />
       <field name="paymentType" />
-      <field name="paydate" type="date">
+      <field name="payDate">
       </field>
     </panel>
     <panel sidebar="true">

@@ -1,7 +1,7 @@
 /*
  * * Axelor Business Solutions
  * 
- * Copyright (C) 2005-2019 Axelor (<http://axelor.com>).
+ * Copyright (C) 2005-2020 Axelor (<http://axelor.com>).
  * 
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -27,7 +27,6 @@ import java.util.Set;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -56,7 +55,6 @@ import com.axelor.db.annotations.Widget;
 import com.google.common.base.MoreObjects;
 
 @Entity
-@Cacheable
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "CONTACT_PERSON", indexes = { @Index(columnList = "title"), @Index(columnList = "fullName"), @Index(columnList = "company") })
@@ -98,8 +96,6 @@ public class Person extends AuditableModel {
 	@VirtualColumn
 	@Access(AccessType.PROPERTY)
 	private String email;
-
-	private String phone;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Address> addresses;
@@ -230,14 +226,6 @@ public class Person extends AuditableModel {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public List<Address> getAddresses() {
@@ -488,7 +476,6 @@ public class Person extends AuditableModel {
 			.add("firstName", getFirstName())
 			.add("lastName", getLastName())
 			.add("dateOfBirth", getDateOfBirth())
-			.add("phone", getPhone())
 			.omitNullValues()
 			.toString();
 	}

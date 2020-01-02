@@ -6,12 +6,10 @@
 
   <module name="employee" package="com.axelor.employee.db" />
 
-  <entity name="Income" cachable="true" table="income">
-
-   <string name="paymentType" required="true" max="255" />
+  <entity name="Income" cachable="true">
+   <string name="paymentType" required="true" max="255" title="Payment type" />
    <decimal name="amount"></decimal>
-   <date name="paydate"></date>
-   <one-to-one ref="Employee" name="employee" required="true"></one-to-one>
-   <many-to-one name="employees" ref="Employee"></many-to-one>
+   <date name="payDate"></date>
+   <one-to-one ref="com.axelor.employee.db.Employee" name="employee" required="true"></one-to-one>
   </entity>
 </domain-models>

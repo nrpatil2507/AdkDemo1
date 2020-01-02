@@ -1,7 +1,7 @@
 /*
  * * Axelor Business Solutions
  * 
- * Copyright (C) 2005-2019 Axelor (<http://axelor.com>).
+ * Copyright (C) 2005-2020 Axelor (<http://axelor.com>).
  * 
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -60,6 +60,11 @@ public class Dept extends AuditableModel {
 	@Column(unique = true)
 	private String dname;
 
+	private Integer priority = 0;
+
+	@Widget(selection = "dept.type.selection")
+	private String status;
+
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
 	@Type(type = "json")
@@ -99,6 +104,22 @@ public class Dept extends AuditableModel {
 		this.dname = dname;
 	}
 
+	public Integer getPriority() {
+		return priority == null ? 0 : priority;
+	}
+
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getAttrs() {
 		return attrs;
 	}
@@ -135,6 +156,8 @@ public class Dept extends AuditableModel {
 			.add("id", getId())
 			.add("code", getCode())
 			.add("dname", getDname())
+			.add("priority", getPriority())
+			.add("status", getStatus())
 			.omitNullValues()
 			.toString();
 	}

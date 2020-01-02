@@ -1,7 +1,7 @@
 /*
  * * Axelor Business Solutions
  * 
- * Copyright (C) 2005-2019 Axelor (<http://axelor.com>).
+ * Copyright (C) 2005-2020 Axelor (<http://axelor.com>).
  * 
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -54,6 +54,7 @@ public class Contact extends AuditableModel {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Person person;
 
+	@Widget(selection = "phone.type.selection")
 	@NotNull
 	@Size(max = 255)
 	private String phonetype;
@@ -63,6 +64,8 @@ public class Contact extends AuditableModel {
 
 	@Size(min = 10, max = 11)
 	private String contactno;
+
+	private Integer numberCnt = 0;
 
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
@@ -114,6 +117,14 @@ public class Contact extends AuditableModel {
 		this.contactno = contactno;
 	}
 
+	public Integer getNumberCnt() {
+		return numberCnt == null ? 0 : numberCnt;
+	}
+
+	public void setNumberCnt(Integer numberCnt) {
+		this.numberCnt = numberCnt;
+	}
+
 	public String getAttrs() {
 		return attrs;
 	}
@@ -148,6 +159,7 @@ public class Contact extends AuditableModel {
 			.add("phonetype", getPhonetype())
 			.add("service_provider", getService_provider())
 			.add("contactno", getContactno())
+			.add("numberCnt", getNumberCnt())
 			.omitNullValues()
 			.toString();
 	}

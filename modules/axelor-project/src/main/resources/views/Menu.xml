@@ -17,18 +17,39 @@
    <view type="grid" name="project-grid"/>
    <view type="form" name="project-form"/>
    </action-view>
-   
+
    <menuitem name="menu-task-freind"
     parent="menu-project"
     title="All Task"
     action="task.all"/>
-    
-    
-     <action-view name="task.all" title="Tasks"
+
+    <menuitem name="menu-task-calendar"
+    parent="menu-project"
+    title="All Task calendar(user)"
+    action="calendar.all"/>
+
+   <action-view name="task.all" title="Tasks"
    model="com.axelor.project.db.ProjectTask">
    <view type="grid" name="project-task-grid"/>
    <view type="form" name="project-task-form"/>
+   <view type="calendar" name="project-task-calendar-my"/>
    </action-view>
-   
 
+   <action-view name="calendar.all" title="Tasks"
+   model="com.axelor.project.db.ProjectTask">
+   <view type="calendar" name="project-task-calendar-my"/>
+    <domain>self.user = :currentUser</domain>
+    <context name="currentUser" expr="eval: __user__"/>
+    </action-view>
+
+    <menuitem name="menu-task-kanban"
+    parent="menu-project"
+    title="All Task(kanban)"
+    action="task.kanban.all"/>
+
+    <action-view name="task.kanban.all" title="Tasks"
+     model="com.axelor.project.db.ProjectTask">
+     <view type="kanban" name="project-task-kanban"/>
+    <view type="form" name="project-task-form"/>
+    </action-view>
 </object-views>

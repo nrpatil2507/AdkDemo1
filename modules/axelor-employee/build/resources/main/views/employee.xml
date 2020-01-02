@@ -6,9 +6,8 @@
 
   <grid name="employee-grid" title="Employees"
     model="com.axelor.employee.db.Employee">
-    <field name="fname" />
-    <field name="mname" />
-    <field name="lname" />
+    <field name="firstName" />
+    <field name="lastName" />
     <field name="address"/>
     <field name="status"/>
   </grid>
@@ -19,9 +18,8 @@
     <field name="profile"></field>
       <field name="fullName" readonly="false">
         <editor>
-          <field name="fname" colSpan="4"/>
-          <field name="mname" colSpan="4"/>
-          <field name="lname" colSpan="4"/>
+         <field name="firstName" />
+       <field name="lastName" />
         </editor>
       </field>
     <field name="" colSpan="6"></field>

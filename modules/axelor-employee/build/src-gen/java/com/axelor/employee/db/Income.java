@@ -1,7 +1,7 @@
 /*
  * * Axelor Business Solutions
  * 
- * Copyright (C) 2005-2019 Axelor (<http://axelor.com>).
+ * Copyright (C) 2005-2020 Axelor (<http://axelor.com>).
  * 
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -30,7 +30,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -45,28 +44,26 @@ import com.google.common.base.MoreObjects;
 
 @Entity
 @Cacheable
-@Table(name = "income", indexes = { @Index(columnList = "employee"), @Index(columnList = "employees") })
+@Table(name = "EMPLOYEE_INCOME", indexes = { @Index(columnList = "employee") })
 public class Income extends AuditableModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_SEQ")
-	@SequenceGenerator(name = "income_SEQ", sequenceName = "income_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EMPLOYEE_INCOME_SEQ")
+	@SequenceGenerator(name = "EMPLOYEE_INCOME_SEQ", sequenceName = "EMPLOYEE_INCOME_SEQ", allocationSize = 1)
 	private Long id;
 
+	@Widget(title = "Payment type")
 	@NotNull
 	@Size(max = 255)
 	private String paymentType;
 
 	private BigDecimal amount = BigDecimal.ZERO;
 
-	private LocalDate paydate;
+	private LocalDate payDate;
 
 	@NotNull
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Employee employee;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private Employee employees;
 
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
@@ -102,12 +99,12 @@ public class Income extends AuditableModel {
 		this.amount = amount;
 	}
 
-	public LocalDate getPaydate() {
-		return paydate;
+	public LocalDate getPayDate() {
+		return payDate;
 	}
 
-	public void setPaydate(LocalDate paydate) {
-		this.paydate = paydate;
+	public void setPayDate(LocalDate payDate) {
+		this.payDate = payDate;
 	}
 
 	public Employee getEmployee() {
@@ -116,14 +113,6 @@ public class Income extends AuditableModel {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
-	}
-
-	public Employee getEmployees() {
-		return employees;
-	}
-
-	public void setEmployees(Employee employees) {
-		this.employees = employees;
 	}
 
 	public String getAttrs() {
@@ -159,7 +148,7 @@ public class Income extends AuditableModel {
 			.add("id", getId())
 			.add("paymentType", getPaymentType())
 			.add("amount", getAmount())
-			.add("paydate", getPaydate())
+			.add("payDate", getPayDate())
 			.omitNullValues()
 			.toString();
 	}

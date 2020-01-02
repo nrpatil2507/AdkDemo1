@@ -1,7 +1,7 @@
 /*
  * * Axelor Business Solutions
  * 
- * Copyright (C) 2005-2019 Axelor (<http://axelor.com>).
+ * Copyright (C) 2005-2020 Axelor (<http://axelor.com>).
  * 
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -21,9 +21,9 @@ import com.axelor.contact.db.Person;
 import com.axelor.db.JpaRepository;
 import com.axelor.db.Query;
 
-public abstract class AbstractPersonRepository extends JpaRepository<Person> {
+public class PersonRepository extends JpaRepository<Person> {
 
-	public AbstractPersonRepository() {
+	public PersonRepository() {
 		super(Person.class);
 	}
 
