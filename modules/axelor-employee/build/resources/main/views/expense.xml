@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <grid name="expense-grid" title="expenses" model="com.axelor.employee.db.Expense">
+    <field name="employee">
+    </field>
+    <field name="expenseType"></field>
+    <field name="amount"></field>
+  </grid>
+
+  <form name="expense-form" title="Expenses" model="com.axelor.employee.db.Expense">
+    <panel title="Overview" colSpan="12">
+      <field name="employee" widget="SuggestBox"></field>
+      <field name="amount" />
+      <field name="expenseType" />
+    </panel>
+    <panel sidebar="true">
+      <field name="createdOn" />
+      <field name="createdBy" />
+      <field name="updatedOn" />
+      <field name="updatedBy" />
+    </panel>
+  </form>
+</object-views>

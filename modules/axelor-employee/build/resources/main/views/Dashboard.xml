@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <dashboard title="Dashboard" name="employee.dashboard.sample"  >
+  <dashlet action="custom:report.total.income" height="100" colSpan="4"/>
+  <dashlet action="custom:report.total.expense" height="100" colSpan="4"/>
+  <dashlet action="employee.dashboard.income.report" height="350" canSearch="true" colSpan="12"/>
+  </dashboard>
+
+    <action-view name="employee.dashboard.income.report" title="All incomes"
+    model="com.axelor.employee.db.Income">
+    <view type="grid" name="income-grid"/>
+    <view type="form" name="income-form"/>
+     <domain>self.payDate &lt;= :_today</domain>
+      <context name="_today" expr="eval: __datetime__" />
+  </action-view>
+
+ <custom name="report.total.income" title="Total income" css="report-box">
+  <dataset type="jpql">
+  <![CDATA[
+ select sum(amount) as total from Income
+  ]]>
+  </dataset>
+  <template>
+  <![CDATA[
+  <div class="report-data">
+    <h1>{{first.total}}</h1>
+    <small>Total Incomes</small>
+    <div class="report-percent font-bold text-info pull-right">20%<i class="fa fa-level-up"></i></div>
+    <div class="report-tags"><span class="label label-important">Today</span></div>
+  </div>
+  ]]>
+  </template>
+</custom>
+
+ <custom name="report.total.expense" title="Total Expenses" css="report-box">
+  <dataset type="jpql">
+  <![CDATA[
+ select sum(amount) as total from Expense
+  ]]>
+  </dataset>
+  <template>
+  <![CDATA[
+  <div class="report-data">
+    <h1>{{first.total}}</h1>
+    <small>Total Expense</small>
+    <div class="report-percent font-bold text-info pull-right">20%<i class="fa fa-level-up"></i></div>
+    <div class="report-tags"><span class="label label-important">Today</span></div>
+  </div>
+  ]]>
+  </template>
+</custom>
+
+ </object-views>

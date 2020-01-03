@@ -5,17 +5,18 @@
   http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
 
   <grid name="income-grid" title="incomes" model="com.axelor.employee.db.Income">
-    <field name="employee"></field>
+    <field name="employee">
+    </field>
     <field name="amount"></field>
     <field name="payDate"></field>
     <field name="paymentType"></field>
   </grid>
 
-  <form name="income-form" title="incomeforms" model="com.axelor.employee.db.Income">
+  <form name="income-form" title="Incomes" model="com.axelor.employee.db.Income">
     <panel title="Overview" colSpan="12">
-    <field name="employee"></field>
+      <field name="employee" widget="SuggestBox"></field>
       <field name="amount" />
-      <field name="paymentType" />
+      <field name="paymentType"/>
       <field name="payDate">
       </field>
     </panel>
@@ -26,5 +27,4 @@
       <field name="updatedBy" />
     </panel>
   </form>
-
 </object-views>

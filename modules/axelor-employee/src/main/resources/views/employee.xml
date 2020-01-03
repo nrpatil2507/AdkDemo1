@@ -14,25 +14,24 @@
 
   <form name="employee-form" title="Employees"
     model="com.axelor.employee.db.Employee">
-    <panel title="Overview" colSpan="12">
-    <field name="profile"></field>
-      <field name="fullName" readonly="false">
-        <editor>
-         <field name="firstName" />
-       <field name="lastName" />
-        </editor>
-      </field>
-    <field name="" colSpan="6"></field>
-      <field name="address" colspan="10">
-      </field>
-      <field name="status" colSpan="3"/>
+    <panel title="overview" css="panel-red">
+    <panel colSpan="4">
+    <field name="profile" colSpan="12"  showTitle="false"></field>
     </panel>
+    <panel showTitle="false" colSpan="8">
+    <field name="firstName" colSpan="5"/>
+    <field name="lastName" colSpan="5"/>
+    <field name="status" colSpan="2"/>
+    <field name="address" colSpan="12"/>
+    </panel>
+       </panel>
     <panel sidebar="true">
       <field name="createdOn"/>
       <field name="createdBy"/>
       <field name="updatedOn"/>
       <field name="updatedBy"/>
     </panel>
+
   </form>
 
 </object-views>

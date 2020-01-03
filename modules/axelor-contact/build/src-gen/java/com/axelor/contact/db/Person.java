@@ -76,8 +76,6 @@ public class Person extends AuditableModel {
 
 	@Widget(search = { "firstName", "lastName" })
 	@NameColumn
-	@VirtualColumn
-	@Access(AccessType.PROPERTY)
 	private String fullName;
 
 	private LocalDate dateOfBirth;
@@ -156,23 +154,7 @@ public class Person extends AuditableModel {
 	}
 
 	public String getFullName() {
-		try {
-			fullName = computeFullName();
-		} catch (NullPointerException e) {
-			Logger logger = LoggerFactory.getLogger(getClass());
-			logger.error("NPE in function field: getFullName()", e);
-		}
 		return fullName;
-	}
-
-	protected String computeFullName() {
-		if (firstName == null && lastName == null) {
-			return null;
-		}
-		if (title == null) {
-			return firstName + " " + lastName;
-		}
-		return title.getName() + " " + firstName + " " + lastName;
 	}
 
 	public void setFullName(String fullName) {
@@ -475,6 +457,7 @@ public class Person extends AuditableModel {
 			.add("id", getId())
 			.add("firstName", getFirstName())
 			.add("lastName", getLastName())
+			.add("fullName", getFullName())
 			.add("dateOfBirth", getDateOfBirth())
 			.omitNullValues()
 			.toString();

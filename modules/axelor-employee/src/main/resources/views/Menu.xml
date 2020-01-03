@@ -7,6 +7,18 @@
   <menuitem name="menu-employee-book"
     title="Employee Data" icon="fa-user" icon-background="blue"/>
 
+    <menuitem name="menu-employee-dashboard"
+    title="Dashboard" icon="fa-dashboard" icon-background="blue"/>
+
+    <menuitem name="menu-dashboard-welcome"
+    parent="menu-employee-dashboard"
+    title="Welcome"
+    action="dashboard.all"/>
+
+    <action-view name="dashboard.all" title="welcome" model="com.axelor.employee.db.Employee">
+    <view type="dashboard" name="employee.dashboard.sample"/>
+    </action-view>
+
     <menuitem name="menu-employee-friends"
     parent="menu-employee-book"
     title="Employees"
@@ -16,6 +28,11 @@
     parent="menu-employee-book"
     title="Incomes"
     action="income.all"/>
+
+    <menuitem name="menu-employee-expense"
+    parent="menu-employee-book"
+    title="Expense"
+    action="expense.all"/>
 
    <action-view name="employee.all" title="employees"
    model="com.axelor.employee.db.Employee">
@@ -27,6 +44,12 @@
    <view type="form" name="income-form"/>
    <view type="grid" name="income-grid"/>
    </action-view>
+
+   <action-view name="expense.all" title="expense" model="com.axelor.employee.db.Expense">
+   <view type="form" name="expense-form"/>
+   <view type="grid" name="expense-grid"/>
+   </action-view>
+
 
 
 </object-views>

@@ -17,6 +17,8 @@
  */
 package com.axelor.employee.db;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -27,7 +29,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -37,12 +41,13 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
 
 import com.axelor.auth.db.AuditableModel;
+import com.axelor.db.annotations.NameColumn;
 import com.axelor.db.annotations.Widget;
 import com.google.common.base.MoreObjects;
 
 @Entity
 @Cacheable
-@Table(name = "EMPLOYEE_EMPLOYEE")
+@Table(name = "EMPLOYEE_EMPLOYEE", indexes = { @Index(columnList = "firstName") })
 public class Employee extends AuditableModel {
 
 	@Id
@@ -50,6 +55,7 @@ public class Employee extends AuditableModel {
 	@SequenceGenerator(name = "EMPLOYEE_EMPLOYEE_SEQ", sequenceName = "EMPLOYEE_EMPLOYEE_SEQ", allocationSize = 1)
 	private Long id;
 
+	@NameColumn
 	@NotNull
 	@Size(max = 255)
 	private String firstName;
@@ -60,6 +66,7 @@ public class Employee extends AuditableModel {
 	@Widget(multiline = true)
 	private String address;
 
+	@Widget(image = true)
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	private byte[] profile;
@@ -68,6 +75,9 @@ public class Employee extends AuditableModel {
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Income income;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Expense> expense;
 
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
@@ -133,6 +143,60 @@ public class Employee extends AuditableModel {
 
 	public void setIncome(Income income) {
 		this.income = income;
+	}
+
+	public List<Expense> getExpense() {
+		return expense;
+	}
+
+	public void setExpense(List<Expense> expense) {
+		this.expense = expense;
+	}
+
+	/**
+	 * Add the given {@link Expense} item to the {@code expense}.
+	 *
+	 * <p>
+	 * It sets {@code item.employee = this} to ensure the proper relationship.
+	 * </p>
+	 *
+	 * @param item
+	 *            the item to add
+	 */
+	public void addExpense(Expense item) {
+		if (getExpense() == null) {
+			setExpense(new ArrayList<>());
+		}
+		getExpense().add(item);
+		item.setEmployee(this);
+	}
+
+	/**
+	 * Remove the given {@link Expense} item from the {@code expense}.
+	 *
+ 	 * @param item
+	 *            the item to remove
+	 */
+	public void removeExpense(Expense item) {
+		if (getExpense() == null) {
+			return;
+		}
+		getExpense().remove(item);
+	}
+
+	/**
+	 * Clear the {@code expense} collection.
+	 *
+	 * <p>
+	 * If you have to query {@link Expense} records in same transaction, make
+	 * sure to call {@link javax.persistence.EntityManager#flush() } to avoid
+	 * unexpected errors.
+	 * </p>
+	 */
+	public void clearExpense() {
+		if (getExpense() != null) {
+			getExpense().clear();
+		}
 	}
 
 	public String getAttrs() {

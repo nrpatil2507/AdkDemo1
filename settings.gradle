@@ -4,3 +4,4 @@ rootProject.name = 'open-platform-demo'
 include "modules:axelor-contact"
 include "modules:axelor-employee"
 include "modules:axelor-project"
+include "modules:axelor-sale"

@@ -6,7 +6,6 @@
 
   <grid name="title-grid" title="Titles"
     model="com.axelor.contact.db.Title">
-
     <field name="code" />
     <field name="name" />
   </grid>

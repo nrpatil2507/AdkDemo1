@@ -16,5 +16,8 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/axelor-project/axelor-project">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/axelor-sale/axelor-sale">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
 	</wb-module>
 </project-modules>

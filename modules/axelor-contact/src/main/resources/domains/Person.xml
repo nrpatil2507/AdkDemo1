@@ -12,15 +12,7 @@
     <string name="lastName" required="true" />
 
     <string name="fullName" namecolumn="true" search="firstName,lastName">
-    <![CDATA[
-    if (firstName == null && lastName == null) {
-        return null;
-    }
-    if (title == null) {
-        return firstName + " " + lastName;
-    }
-    return title.getName() + " " + firstName + " " + lastName;
-    ]]></string>
+    </string>
 
     <date name="dateOfBirth" />
     <binary name="image" title="Photo" help="Max size 4MB." image="true"/>
