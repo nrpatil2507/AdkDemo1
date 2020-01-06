@@ -1,0 +1,32 @@
+                          Table "public.sale_order"
+    Column    |            Type             | Collation | Nullable | Default 
+--------------+-----------------------------+-----------+----------+---------
+ id           | bigint                      |           | not null | 
+ archived     | boolean                     |           |          | 
+ version      | integer                     |           |          | 
+ created_on   | timestamp without time zone |           |          | 
+ updated_on   | timestamp without time zone |           |          | 
+ amount       | numeric(20,4)               |           |          | 
+ attrs        | jsonb                       |           |          | 
+ confirm_date | date                        |           |          | 
+ confirmed    | boolean                     |           |          | 
+ name         | character varying(255)      |           |          | 
+ notes        | text                        |           |          | 
+ order_date   | date                        |           | not null | 
+ status       | character varying(255)      |           |          | 
+ tax_amount   | numeric(20,4)               |           |          | 
+ total_amount | numeric(20,2)               |           |          | 
+ created_by   | bigint                      |           |          | 
+ updated_by   | bigint                      |           |          | 
+ customer     | bigint                      |           | not null | 
+Indexes:
+    "sale_order_pkey" PRIMARY KEY, btree (id)
+    "sale_order_customer_idx" btree (customer)
+    "sale_order_name_idx" btree (name)
+Foreign-key constraints:
+    "fk_84nhvbnuhxydck7ntwphdd3s2" FOREIGN KEY (customer) REFERENCES sale_customer(id)
+    "fk_c33gly6y17tythibm9pl4e2k5" FOREIGN KEY (created_by) REFERENCES auth_user(id)
+    "fk_jk3msarrdj3gb27dljy2ensmu" FOREIGN KEY (updated_by) REFERENCES auth_user(id)
+Referenced by:
+    TABLE "sale_order_line" CONSTRAINT "fk_4f36udvm2jis0pq4xl3l3kqm8" FOREIGN KEY (sale_order) REFERENCES sale_order(id)
+

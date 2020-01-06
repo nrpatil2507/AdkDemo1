@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <menuitem name="menu-sales"
+    title="Sales Management" icon="fa-shopping-cart" icon-background="orange"/>
+
+    <menuitem name="menu-customer" parent="menu-sales"
+    title="All Customers"
+    action="sale.customer"/>
+
+     <menuitem name="menu-order" parent="menu-sales"
+    title="All Orders"
+    action="sale.order"/>
+
+  <menuitem name="menu-product-category" parent="menu-sales"
+    title="Products Category"
+    action="sale.category"/>
+
+   <menuitem name="menu-product-tax" parent="menu-sales"
+    title="All Tax"
+    action="sale.tax"/>
+
+    <menuitem name="menu-product" parent="menu-sales"
+    title="All Products"
+    action="sale.products"/>
+
+    <action-view name="sale.order" model="com.axelor.sale.db.Order" title="Order Detail">
+    <view type="grid"/>
+    <view type="form"/>
+    </action-view>
+
+    <action-view name="sale.customer" model="com.axelor.sale.db.Customer" title="Customers">
+    <view type="grid"/>
+    <view type="form"/>
+  </action-view>
+
+  <action-view name="sale.category" model="com.axelor.sale.db.ProductCategory" title="Categories">
+    <view type="grid"/>
+    <view type="form"/>
+  </action-view>
+
+  <action-view name="sale.tax" model="com.axelor.sale.db.Tax" title="Taxes">
+    <view type="grid"/>
+    <view type="form"/>
+  </action-view>
+
+   <action-view name="sale.products" model="com.axelor.sale.db.Product" title="Products">
+    <view type="grid"/>
+    <view type="form"/>
+  </action-view>
+
+</object-views>

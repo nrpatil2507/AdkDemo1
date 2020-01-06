@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+  <grid name="order-grid" title="Orders" model="com.axelor.sale.db.Order">
+    <field name="name" />
+    <field name="customer" />
+    <field name="orderDate" />
+    <field name="status" />
+    <field name="totalAmount" />
+  </grid>
+
+  <form name="order-form" title="Order" model="com.axelor.sale.db.Order"
+    onSave="com.axelor.sale.web.SaleOrderController:setAmount" >
+    <panel>
+      <field name="status" widget="nav-select" readonly="true" />
+
+    </panel>
+
+    <panel title="Order detail" colSpan="8">
+      <field name="customer" />
+      <field name="orderDate" readonlyIf="confirmed" />
+      <field name="confirmDate" requiredIf="confirmed"
+        validIf="confirmDate == null || $moment(confirmDate) >= $moment(orderDate)" />
+      <field name="confirmed" widget="boolean-switch" />
+    </panel>
+
+    <panel sidebar="true" colSpan="4">
+      <button name="btnDraft" widget="info-button" title="Draft"
+        css="btn-primary" hidden="true" onClick="action.order.status.method.onclick.change.statusdraft"
+        showIf="id &amp;&amp; status == 'CANCELED' || status == 'OPEN'"/>
+      <button name="btnOpen" widget="info-button" title="Open"
+        css="btn-success" onClick="action.order.status.method.onclick.change.statusopen"
+        hidden="true" showIf="id &amp;&amp; status == 'DRAFT' || status=='CLOSED'" />
+
+      <button name="btnClose" widget="info-button" title="Close"
+        css="btn-warning" onClick="action.order.status.method.onclick.change.statusclose"
+        hidden="true" showIf="id &amp;&amp; status == 'OPEN'"/>
+      <button name="btnCancel" widget="info-button" title="Cancel"
+        css="btn-danger" onClick="action.order.status.method.onclick.change.statuscancel"
+        hideIf="!id || status == 'CANCELED'"/>
+    </panel>
+
+    <panel-related field="items" editable="true">
+      <field name="product" />
+      <field name="price" />
+      <field name="totalQuantity" />
+      <field name="taxes" onChange="action.method.on.change.set.totalAmount" />
+      <field name="TotalAmount"></field>
+    </panel-related>
+
+    <panel>
+      <field name="totalQty" title="Total qty" />
+      <field name="totalAmount" title="Total amount" />
+    </panel>
+  </form>
+
+  <action-method name="action.method.on.change.set.totalAmount">
+    <call class="com.axelor.sale.web.SaleOrderController" method="setTotalAmount" />
+  </action-method>
+
+
+  <action-attrs name="action.order.status.attrs.change.on.draft">
+    <attribute name="value" for="status" expr="#{status='DRAFT'}"/>
+  </action-attrs>
+
+  <action-attrs name="action.order.status.attrs.change.on.open">
+    <attribute name="value" for="status" expr="#{status='OPEN'}" />
+  </action-attrs>
+
+  <action-attrs name="action.order.status.attrs.change.on.close">
+    <attribute name="value" for="status" expr="#{status='CLOSED'}" />
+  </action-attrs>
+
+
+  <action-attrs name="action.order.status.attrs.change.on.cancel">
+    <attribute name="value" for="status" expr="#{status='CANCELED'}"
+      if="#{!btnCancel}" />
+  </action-attrs>
+
+
+  <action-method name="action.order.status.method.onclick.change.statusopen">
+  <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
+  </action-method>
+
+    <action-method name="action.order.status.method.onclick.change.statusclose">
+  <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
+  </action-method>
+
+    <action-method name="action.order.status.method.onclick.change.statusdraft">
+  <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
+  </action-method>
+
+    <action-method name="action.order.status.method.onclick.change.statuscancel">
+  <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
+  </action-method>
+
+
+</object-views>

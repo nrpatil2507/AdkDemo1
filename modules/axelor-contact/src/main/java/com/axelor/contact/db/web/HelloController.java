@@ -13,7 +13,6 @@ public class HelloController {
   public void setFullName(ActionRequest request, ActionResponse response) {
     Person person = request.getContext().asType(Person.class);
     person.setFullName(person.getFirstName() + " " + person.getLastName());
-    // response.setValues(person);
     // response.setValue("fullName", person.getFirstName() + " " +
     // person.getLastName());
     helloService.onSave(person);

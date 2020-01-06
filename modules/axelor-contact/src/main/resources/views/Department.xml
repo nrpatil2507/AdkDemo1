@@ -4,10 +4,10 @@
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
 <selection name="dept.type.selection">
-    <option value="Active">Active</option>
-    <option value="Deactive">Deactive</option>
-    <option value="idle">Idle</option>
-    <option value="Other">Other</option>
+    <option value="ACTIVE">Active</option>
+    <option value="DEACTIve">Deactive</option>
+    <option value="IDLE">Idle</option>
+    <option value="CANCEL">Cancel</option>
   </selection>
   <grid name="dept-grid" title="Dept"
     model="com.axelor.contact.db.Dept" orderBy="dname">
@@ -35,10 +35,27 @@
    <viewer><![CDATA[
     <strong>{{record.dname|upper}}</strong>
     ]]></viewer></field>
-    <field name="status"></field>
+    <field name="status" widget="nav-select"></field>
     <field name="priority"></field>
   </panel>
-  <panel-tabs name="mypanel" title="mytabs">
+
+  <panel>
+      <button name="btnDraft" widget="info-button" title="ACTIVE"
+        css="btn-primary" colSpan="3" hidden="true" onClick="action.dept.status.attrs.change.on.draft"
+        showIf="id &amp;&amp; status == 'CANCELED' || status == 'DEACTIVE'" />
+      <button name="btnOpen" widget="info-button" title="DEACTIVE"
+        css="btn-success" onClick="action.dept.status.attrs.change.on.open"
+        colSpan="3" hidden="true" showIf="id &amp;&amp; status == 'ACTIVE' || status=='IDLE'" />
+      <button name="btnClose" widget="info-button" title="IDLE"
+        css="btn-warning" onClick="action.dept.status.attrs.change.on.close"
+        hidden="true" showIf="id &amp;&amp; status == 'DEACTIVE'" colSpan="3" />
+      <button name="btnCancel" widget="info-button" title="CANCEL"
+        css="btn-danger" onClick="action.dept.status.attrs.change.on.cancel"
+        hideIf="!id || status == 'CANCELED'" colSpan="3" />
+    </panel>
+
+
+ <!--   <panel-tabs name="mypanel" title="mytabs">
   <panel title="profile">
    <field name="code"/>
    <field name="name" />
@@ -47,8 +64,9 @@
     <field name="name" />
    </panel>
   </panel-tabs>
-  <help>this is a Department info form</help>
+  <help>this is a Department info form</help>-->
   </form>
+
 
  <cards name="dept-cards" title="Department" model="com.axelor.contact.db.Dept" >
   <field name="code" />

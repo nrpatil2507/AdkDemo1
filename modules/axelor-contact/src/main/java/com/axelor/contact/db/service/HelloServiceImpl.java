@@ -11,6 +11,6 @@ public class HelloServiceImpl implements HelloService {
   @Override
   @Transactional
   public void onSave(Person person) {
-    personRepo.save(person);
+    personRepo.save(personRepo.find(person.getId()));
   }
 }
