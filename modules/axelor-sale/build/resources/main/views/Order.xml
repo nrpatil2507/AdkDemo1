@@ -12,7 +12,7 @@
   </grid>
 
   <form name="order-form" title="Order" model="com.axelor.sale.db.Order"
-    onSave="com.axelor.sale.web.SaleOrderController:setAmount" >
+    onSave="com.axelor.sale.web.SaleOrderController:setAmount">
     <panel>
       <field name="status" widget="nav-select" readonly="true" />
 
@@ -26,38 +26,46 @@
       <field name="confirmed" widget="boolean-switch" />
     </panel>
 
-    <panel>
+    <panel sidebar="true" colSpan="4">
       <button name="btnDraft" widget="info-button" title="Draft"
-        css="btn-primary" colSpan="3" hidden="true" onClick="action.order.status.method.onclick.change.statusdraft"
-        showIf="id &amp;&amp; status == 'CANCELED' || status == 'OPEN'" />
+        css="btn-primary" hidden="true" onClick="action.order.status.method.onclick.change.statusdraft"
+        showIf="id &amp;&amp; status == 'CANCELED' || status == 'OPEN'"/>
       <button name="btnOpen" widget="info-button" title="Open"
         css="btn-success" onClick="action.order.status.method.onclick.change.statusopen"
-        colSpan="3" hidden="true" showIf="id &amp;&amp; status == 'DRAFT' || status=='CLOSED'" />
+        hidden="true" showIf="id &amp;&amp; status == 'DRAFT' || status=='CLOSED'" />
 
       <button name="btnClose" widget="info-button" title="Close"
         css="btn-warning" onClick="action.order.status.method.onclick.change.statusclose"
-        hidden="true" showIf="id &amp;&amp; status == 'OPEN'" colSpan="3" />
+        hidden="true" showIf="id &amp;&amp; status == 'OPEN'"/>
       <button name="btnCancel" widget="info-button" title="Cancel"
         css="btn-danger" onClick="action.order.status.method.onclick.change.statuscancel"
-        hideIf="!id || status == 'CANCELED'" colSpan="3" />
+        hideIf="!id || status == 'CANCELED'"/>
     </panel>
 
     <panel-related field="items" editable="true">
       <field name="product" />
       <field name="price" />
       <field name="totalQuantity" />
-      <field name="taxes" onChange="action.method.on.change.set.totalAmount" />
-      <field name="TotalAmount"></field>
+      <field name="taxes" onChange="action.method.on.change.set.totalAmount"/>
+      <field name="TotalAmount" min="0.00"></field>
     </panel-related>
 
     <panel>
-      <field name="totalQty" title="Total qty" />
-      <field name="totalAmount" title="Total amount" />
+      <field colOffset="10" name="totalQty" title="Total qty" readonly="true"/>
+      <field colOffset="10" name="totalAmount" title="Total amount" readonly="true" />
+    </panel>
+
+    <panel>
+    <button name="btnimport" widget="info-button" title="import" css="btn-primary" onClick="com.axelor.csv.web.SaleOrderController:importCsvData"/>
     </panel>
   </form>
 
   <action-method name="action.method.on.change.set.totalAmount">
     <call class="com.axelor.sale.web.SaleOrderController" method="setTotalAmount" />
+  </action-method>
+
+    <action-method name="action.method.on.click.importdata">
+    <call class="com.axelor.sale.web.SaleOrderController" method="importdata" />
   </action-method>
 
 
@@ -88,13 +96,12 @@
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
 
-    <action-method name="action.order.status.method.onclick.change.statusdraft">
+  <action-method name="action.order.status.method.onclick.change.statusdraft">
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
 
     <action-method name="action.order.status.method.onclick.change.statuscancel">
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
-
 
 </object-views>

@@ -28,6 +28,17 @@
     title="All Task calendar(user)"
     action="calendar.all"/>
 
+    <menuitem name="menu-project-employee"
+    parent="menu-project"
+    title="All employee"
+    action="project.employee.all"/>
+
+    <action-view name="project.employee.all" title="Employees"
+     model="com.axelor.project.db.ProjectEmployee">
+     <view type="grid" name="project-employee-grid"/>
+     <view type="form" name="project-employee-form"/>
+    </action-view>
+
    <action-view name="task.all" title="Tasks"
    model="com.axelor.project.db.ProjectTask">
    <view type="grid" name="project-task-grid"/>

@@ -12,7 +12,7 @@
   </grid>
 
   <form name="order-form" title="Order" model="com.axelor.sale.db.Order"
-    onSave="com.axelor.sale.web.SaleOrderController:setAmount" >
+    onSave="com.axelor.sale.web.SaleOrderController:setAmount">
     <panel>
       <field name="status" widget="nav-select" readonly="true" />
 
@@ -46,18 +46,26 @@
       <field name="product" />
       <field name="price" />
       <field name="totalQuantity" />
-      <field name="taxes" onChange="action.method.on.change.set.totalAmount" />
-      <field name="TotalAmount"></field>
+      <field name="taxes" onChange="action.method.on.change.set.totalAmount"/>
+      <field name="TotalAmount" min="0.00"></field>
     </panel-related>
 
     <panel>
-      <field name="totalQty" title="Total qty" />
-      <field name="totalAmount" title="Total amount" />
+      <field colOffset="10" name="totalQty" title="Total qty" readonly="true"/>
+      <field colOffset="10" name="totalAmount" title="Total amount" readonly="true" />
+    </panel>
+
+    <panel>
+    <button name="btnimport" widget="info-button" title="import" css="btn-primary" onClick="com.axelor.csv.web.SaleOrderController:importCsvData"/>
     </panel>
   </form>
 
   <action-method name="action.method.on.change.set.totalAmount">
     <call class="com.axelor.sale.web.SaleOrderController" method="setTotalAmount" />
+  </action-method>
+
+    <action-method name="action.method.on.click.importdata">
+    <call class="com.axelor.sale.web.SaleOrderController" method="importdata" />
   </action-method>
 
 
@@ -88,13 +96,12 @@
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
 
-    <action-method name="action.order.status.method.onclick.change.statusdraft">
+  <action-method name="action.order.status.method.onclick.change.statusdraft">
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
 
     <action-method name="action.order.status.method.onclick.change.statuscancel">
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
-
 
 </object-views>

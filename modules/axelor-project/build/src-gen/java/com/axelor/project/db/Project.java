@@ -50,12 +50,12 @@ import com.google.common.base.MoreObjects;
 
 @Entity
 @Cacheable
-@Table(name = "PROJECT_PROJECT", indexes = { @Index(columnList = "parent") })
+@Table(name = "Project", indexes = { @Index(columnList = "parent") })
 public class Project extends AuditableModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECT_PROJECT_SEQ")
-	@SequenceGenerator(name = "PROJECT_PROJECT_SEQ", sequenceName = "PROJECT_PROJECT_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Project_SEQ")
+	@SequenceGenerator(name = "Project_SEQ", sequenceName = "Project_SEQ", allocationSize = 1)
 	private Long id;
 
 	@HashKey

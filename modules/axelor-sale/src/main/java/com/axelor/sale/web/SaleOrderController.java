@@ -1,6 +1,8 @@
 package com.axelor.sale.web;
 
 import com.axelor.common.ObjectUtils;
+import com.axelor.data.Importer;
+import com.axelor.data.csv.CSVImporter;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.sale.db.Order;
@@ -18,8 +20,20 @@ public class SaleOrderController {
     float value = orderline.getPrice().floatValue() * orderline.getTotalQuantity();
     float taxValue = orderline.getTaxes().getTaxRate().floatValue() * value / 100;
     float totalAmount = value + taxValue;
-
     response.setValue("TotalAmount", totalAmount);
+  }
+
+  public void setTotal(ActionRequest request, ActionResponse response) {
+    Order order = request.getContext().asType(Order.class);
+    List<OrderLine> orderline = order.getItems();
+    float totalAmount = 0, value, taxValue;
+    for (OrderLine orderLine : orderline) {
+
+      value = orderLine.getPrice().floatValue() * orderLine.getTotalQuantity();
+      taxValue = orderLine.getTaxes().getTaxRate().floatValue() * value / 100;
+      totalAmount = value + taxValue;
+      response.setValue("TotalAmount", totalAmount);
+    }
   }
 
   public void setAmount(ActionRequest request, ActionResponse response) {
@@ -33,7 +47,6 @@ public class SaleOrderController {
       for (OrderLine orderLine : orderLineList) {
         value = value + orderLine.getPrice().floatValue() * orderLine.getTotalQuantity();
         qty = qty + orderLine.getTotalQuantity();
-
         Tax tax = orderLine.getTaxes();
         taxValue = tax.getTaxRate().floatValue() * value / 100;
         totalVal = value + taxValue;
@@ -44,9 +57,14 @@ public class SaleOrderController {
     response.setValue("totalQty", qty);
   }
 
+  public void importdata(ActionRequest request, ActionResponse response) {
+    Importer importer = new CSVImporter("data-demo/csv-config.xml", "data-demo/csv");
+    response.setFlash("import data");
+    importer.run();
+  }
+
   public void chekstatus(ActionRequest request, ActionResponse response) {
 
-    Order order = request.getContext().asType(Order.class);
     String act = request.getAction();
 
     if (act.equals("action.order.status.method.onclick.change.statusdraft")) {

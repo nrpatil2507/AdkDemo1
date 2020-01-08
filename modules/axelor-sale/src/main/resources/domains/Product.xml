@@ -12,8 +12,8 @@
     <string name="color" selection="product.color.selection"/>
 
    <binary name="image" image="true"></binary>
-    <many-to-one name="category" ref="ProductCategory"/>
-    <string name="notes" large="true" />
+   <many-to-one name="category" ref="ProductCategory"/>
+   <string name="notes" large="true" />
 
   </entity>
 

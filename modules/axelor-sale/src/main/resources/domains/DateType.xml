@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.2.xsd">
+
+  <module name="sale" package="com.axelor.sale.db"/>
+
+  <entity name="DateType" cacheable="true">
+  <date name="localDate"></date>
+  <time name="localTime"></time>
+  <datetime name="localDateTime" tz="true"/>
+  <boolean name="status"></boolean>
+  <integer name="numberData"></integer>
+  </entity>
+
+</domain-models>
