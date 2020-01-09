@@ -4,8 +4,6 @@ import com.axelor.common.ObjectUtils;
 import com.axelor.data.ImportTask;
 import com.axelor.data.Importer;
 import com.axelor.data.csv.CSVImporter;
-import com.axelor.meta.MetaFiles;
-import com.axelor.meta.db.MetaFile;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.sale.db.Order;
@@ -53,7 +51,7 @@ public class SaleOrderController {
     return order;
   }
 
-  private File getConfigXmlFile() {
+  public File getConfigXmlFile() {
 
     File configFile = null;
     try {
@@ -71,29 +69,48 @@ public class SaleOrderController {
     return configFile;
   }
 
-  private File getDataCsvFile(MetaFile dataFile) {
+  public File getDataCsvFile() {
 
     File csvFile = null;
     File tempDir = null;
     try {
       tempDir = Files.createTempDir();
-      csvFile = new File(tempDir, "Country.csv");
+      csvFile = File.createTempFile("country1", ".csv");
+      Files.copy(tempDir, csvFile);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return csvFile;
+  }
 
-      Files.copy(MetaFiles.getPath(dataFile).toFile(), csvFile);
+  public File getcsv(String filename) {
+    File configFile = null;
+    try {
+      configFile = File.createTempFile("country", ".csv");
+
+      InputStream bindFileInputStream =
+          this.getClass().getResourceAsStream("/data-demo/input/" + filename);
+      FileOutputStream outputStream = new FileOutputStream(configFile);
+
+      IOUtils.copy(bindFileInputStream, outputStream);
 
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return tempDir;
+    return configFile;
   }
 
   public void importCsvData(ActionRequest request, ActionResponse response) {
-    Importer importer = new CSVImporter("data-demo/csv-config.xml");
+
+    File configFile = getConfigXmlFile();
+    Importer importer = new CSVImporter(configFile.getAbsolutePath());
+
     importer.run(
         new ImportTask() {
           @Override
           public void configure() throws IOException {
-            input("[country]", new File("data-demo/input/country1.csv"));
+            input("[country]", new File(getcsv("country1.csv").getAbsolutePath()));
+            input("[sale.order]", new File(getcsv("order1.csv").getAbsolutePath()));
           }
         });
     response.setFlash("call csv import");

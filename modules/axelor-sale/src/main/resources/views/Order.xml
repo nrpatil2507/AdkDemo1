@@ -15,7 +15,6 @@
     onSave="com.axelor.sale.web.SaleOrderController:setAmount">
     <panel>
       <field name="status" widget="nav-select" readonly="true" />
-
     </panel>
 
     <panel title="Order detail" colSpan="8">
@@ -56,18 +55,14 @@
     </panel>
 
     <panel>
-    <button name="btnimport" widget="info-button" title="import" css="btn-primary" onClick="com.axelor.csv.web.SaleOrderController:importCsvData"/>
+    <button name="btnimport" title="import" css="btn-primary" onClick="com.axelor.csv.web.SaleOrderController:importCsvData" height="100"/>
+    <button name="btnexport" title="Export" showIf="id" onClick="export.sale.order" css="btn-primary" height="100"/>
     </panel>
   </form>
 
   <action-method name="action.method.on.change.set.totalAmount">
     <call class="com.axelor.sale.web.SaleOrderController" method="setTotalAmount" />
   </action-method>
-
-    <action-method name="action.method.on.click.importdata">
-    <call class="com.axelor.sale.web.SaleOrderController" method="importdata" />
-  </action-method>
-
 
   <action-attrs name="action.order.status.attrs.change.on.draft">
     <attribute name="value" for="status" expr="#{status='DRAFT'}"/>
@@ -103,5 +98,9 @@
     <action-method name="action.order.status.method.onclick.change.statuscancel">
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
+
+   <action-export name="export.sale.order" output="${name}/${date}${time}" download="true">
+    <export name="${name}.xml" template="data-export/export-sale-order.st"/>
+  </action-export>
 
 </object-views>

@@ -4,6 +4,26 @@
   xsi:schemaLocation="http://axelor.com/xml/ns/data-import
   http://axelor.com/xml/ns/data-import/data-import_5.2.xsd">
 
-  <input file="country.csv" type="com.axelor.contact.db.Country"/>
+  <input file="[country]" type="com.axelor.contact.db.Country"/>
+
+  <input file="[sale.order]" type="com.axelor.sale.db.OrderLine" prepare-context="com.axelor.csv.web.CsvImportController:createOrder"
+   call="com.axelor.csv.web.CsvImportController:updateOrder">
+
+  <bind to="_customer" type="com.axelor.sale.db.Customer" search="self.email = :email">
+  <bind to="firstName" column="firstName"/>
+  <bind to="lastName" column="lastName"/>
+  <bind to="email" column="email"/>
+  </bind>
+
+  <bind to="product" search="self.name = :name">
+  <bind to="name" column="name"/>
+  </bind>
+  <bind to="price" column="price"/>
+  <bind to="totalQuantity" column="qty"/>
+  <bind to="taxes" search="self.taxName = :tax">
+  <bind to="taxName" column="tax"/>
+  <bind to="taxRate" column="taxrate"/>
+  </bind>
+  </input>
 
   </csv-inputs>
