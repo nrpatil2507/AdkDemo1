@@ -6,7 +6,7 @@
 
   <input file="[country]" type="com.axelor.contact.db.Country"/>
 
-  <input file="[sale.order]" type="com.axelor.sale.db.OrderLine" prepare-context="com.axelor.csv.web.CsvImportController:createOrder"
+ <input file="[sale.order]" type="com.axelor.sale.db.OrderLine" prepare-context="com.axelor.csv.web.CsvImportController:createOrder"
    call="com.axelor.csv.web.CsvImportController:updateOrder">
 
   <bind to="_customer" type="com.axelor.sale.db.Customer" search="self.email = :email">

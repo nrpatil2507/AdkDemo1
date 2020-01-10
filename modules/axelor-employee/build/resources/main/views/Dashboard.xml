@@ -6,6 +6,7 @@
   <dashboard title="Dashboard" name="employee.dashboard.sample"  >
   <dashlet action="custom:report.total.income" height="100" colSpan="4"/>
   <dashlet action="custom:report.total.expense" height="100" colSpan="4"/>
+  <dashlet action="chart:chart.sales.per.month"/>
   <dashlet action="employee.dashboard.income.report" height="350" canSearch="true" colSpan="12"/>
   </dashboard>
 
@@ -53,4 +54,35 @@
   </template>
 </custom>
 
- </object-views>
+<chart name="chart.sales.per.month" title="Sales per month" >
+
+ <search-fields>
+     <field type="datetime" name="fromDateTime" title="From Date"/>
+     <field type="datetime" name="toDateTime" title="To Date"/>
+  </search-fields>
+
+  <dataset type="jpql">
+  <![CDATA[
+   SELECT
+      SUM(self.totalAmount) AS amount,
+      MONTH(self.orderDate) AS month,
+      _customer.firstName AS customer
+  FROM
+      Order self
+  LEFT JOIN
+      self.customer AS _customer
+  WHERE
+     self.orderDate > :fromDateTime
+    AND self.orderDate < :toDateTime
+  GROUP BY
+      _customer,
+      MONTH(self.orderDate)
+  ORDER BY
+      month
+  ]]>
+  </dataset>
+  <category key="month" type="month"/>
+  <series key="amount" groupBy="customer" type="bar"/>
+ <config name="colors" value="#31a354,#e6550d"/>
+</chart>
+</object-views>
