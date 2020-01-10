@@ -4,6 +4,6 @@
   xsi:schemaLocation="http://axelor.com/xml/ns/data-import
   http://axelor.com/xml/ns/data-import/data-import_5.2.xsd">
 
-  <input file="country1.csv" type="com.axelor.contact.db.Country"/>
+  <input file="country.csv" type="com.axelor.contact.db.Country"/>
 
   </csv-inputs>

@@ -2,6 +2,7 @@ package com.axelor.csv.web;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 
 import com.axelor.common.ObjectUtils;
-import com.axelor.data.Importer;
 import com.axelor.data.csv.CSVImporter;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
@@ -68,25 +68,18 @@ public class SaleOrderController {
 		return configFile;
 	}
 
-	public File getDataCsvFile() {
+	public File getDataCsvFile() throws IOException {
 
 		File csvFile = null;
 		File tempDir = null;
 
-		try {
-			tempDir = Files.createTempDir();
+		tempDir = Files.createTempDir();
+		csvFile = new File(tempDir, "country.csv");
 
-			csvFile = File.createTempFile("country", ".csv");
+		InputStream bindFileInputStream = this.getClass().getResourceAsStream("/data-demo/input/country1.csv");
+		FileOutputStream outputStream = new FileOutputStream(csvFile);
+		IOUtils.copy(bindFileInputStream, outputStream);
 
-			InputStream bindFileInputStream = this.getClass().getResourceAsStream("/data-demo/input/");
-			FileOutputStream outputStream = new FileOutputStream(csvFile);
-
-			IOUtils.copy(bindFileInputStream, outputStream);
-			// Files.copy(tempDir, outputStream);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return tempDir;
 	}
 
@@ -106,10 +99,12 @@ public class SaleOrderController {
 		return configFile;
 	}
 
-	public void importCsvData(ActionRequest request, ActionResponse response) {
+	public void importCsvData(ActionRequest request, ActionResponse response) throws IOException {
 
 		File configFile = getConfigXmlFile();
-		Importer importer = new CSVImporter(configFile.getAbsolutePath(), getDataCsvFile().getAbsolutePath());
+		File dataFile = getDataCsvFile();
+
+		CSVImporter importer = new CSVImporter(configFile.getAbsolutePath(), dataFile.getAbsolutePath());
 		importer.run();
 		// importer.run(new ImportTask() {
 		// @Override
