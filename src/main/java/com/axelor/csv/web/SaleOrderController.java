@@ -1,16 +1,7 @@
 package com.axelor.csv.web;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
-
 import com.axelor.common.ObjectUtils;
+import com.axelor.data.ImportTask;
 import com.axelor.data.csv.CSVImporter;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
@@ -18,101 +9,148 @@ import com.axelor.sale.db.Order;
 import com.axelor.sale.db.OrderLine;
 import com.axelor.sale.db.Tax;
 import com.google.common.io.Files;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.io.IOUtils;
 
 public class SaleOrderController {
 
-	public Object setTotalAmount(Object bean, Map<String, Object> context) {
-		assert bean instanceof Order;
-		Order order = (Order) bean;
-		float taxValue = 0;
-		float totalVal = 0;
-		float value = 0, taxam = 0;
-		float result = 0;
-		int qty = 0;
-		List<OrderLine> orderLineList = order.getItems();
-		if (!ObjectUtils.isEmpty(orderLineList)) {
-			for (OrderLine orderLine : orderLineList) {
-				value = orderLine.getPrice().floatValue() * orderLine.getTotalQuantity();
-				result += value;
-				qty = qty + orderLine.getTotalQuantity();
+  public Object setTotalAmount(Object bean, Map<String, Object> context) {
+    assert bean instanceof Order;
+    Order order = (Order) bean;
+    float taxValue = 0;
+    float totalVal = 0;
+    float value = 0, taxam = 0;
+    float result = 0;
+    int qty = 0;
+    List<OrderLine> orderLineList = order.getItems();
+    if (!ObjectUtils.isEmpty(orderLineList)) {
+      for (OrderLine orderLine : orderLineList) {
+        value = orderLine.getPrice().floatValue() * orderLine.getTotalQuantity();
+        result += value;
+        qty = qty + orderLine.getTotalQuantity();
 
-				Tax tax = orderLine.getTaxes();
+        Tax tax = orderLine.getTaxes();
 
-				taxValue = tax.getTaxRate().floatValue() * value / 100;
+        taxValue = tax.getTaxRate().floatValue() * value / 100;
 
-				taxam += taxValue;
+        taxam += taxValue;
 
-				totalVal = result + taxam;
-			}
-		}
-		order.setTaxAmount(new BigDecimal(taxam));
-		order.setTotalAmount(new BigDecimal(totalVal));
-		order.setTotalQty(new BigDecimal(qty));
-		return order;
-	}
+        totalVal = result + taxam;
+      }
+    }
+    order.setTaxAmount(new BigDecimal(taxam));
+    order.setTotalAmount(new BigDecimal(totalVal));
+    order.setTotalQty(new BigDecimal(qty));
+    return order;
+  }
 
-	public File getConfigXmlFile() {
+  public File getConfigXmlFile() {
 
-		File configFile = null;
-		try {
-			configFile = File.createTempFile("input-config", ".xml");
+    File configFile = null;
+    try {
+      configFile = File.createTempFile("input-config", ".xml");
 
-			InputStream bindFileInputStream = this.getClass().getResourceAsStream("/data-demo/csv-config2.xml");
-			FileOutputStream outputStream = new FileOutputStream(configFile);
+      InputStream bindFileInputStream =
+          this.getClass().getResourceAsStream("/data-demo/input-config2.xml");
+      FileOutputStream outputStream = new FileOutputStream(configFile);
 
-			IOUtils.copy(bindFileInputStream, outputStream);
+      IOUtils.copy(bindFileInputStream, outputStream);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return configFile;
-	}
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return configFile;
+  }
 
-	public File getDataCsvFile() throws IOException {
+  public File getXmlFile() {
 
-		File csvFile = null;
-		File tempDir = null;
+    File configFile = null;
+    try {
+      configFile = File.createTempFile("input-config", ".xml");
 
-		tempDir = Files.createTempDir();
-		csvFile = new File(tempDir, "country.csv");
+      InputStream bindFileInputStream =
+          this.getClass().getResourceAsStream("/data-demo/csv-config.xml");
+      FileOutputStream outputStream = new FileOutputStream(configFile);
 
-		InputStream bindFileInputStream = this.getClass().getResourceAsStream("/data-demo/input/country1.csv");
-		FileOutputStream outputStream = new FileOutputStream(csvFile);
-		IOUtils.copy(bindFileInputStream, outputStream);
+      IOUtils.copy(bindFileInputStream, outputStream);
 
-		return tempDir;
-	}
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return configFile;
+  }
 
-	public File getcsv(String filename) {
-		File configFile = null;
-		try {
-			configFile = File.createTempFile("country", ".csv");
+  public File getDataCsvDir() throws IOException {
 
-			InputStream bindFileInputStream = this.getClass().getResourceAsStream("/data-demo/input/" + filename);
-			FileOutputStream outputStream = new FileOutputStream(configFile);
+    File csvFile = null;
+    File tempDir = null;
 
-			IOUtils.copy(bindFileInputStream, outputStream);
+    tempDir = Files.createTempDir();
+    csvFile = new File(tempDir, "country.csv");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return configFile;
-	}
+    InputStream bindFileInputStream =
+        this.getClass().getResourceAsStream("/data-demo/input/country1.csv");
+    FileOutputStream outputStream = new FileOutputStream(csvFile);
+    IOUtils.copy(bindFileInputStream, outputStream);
 
-	public void importCsvData(ActionRequest request, ActionResponse response) throws IOException {
+    return tempDir;
+  }
 
-		File configFile = getConfigXmlFile();
-		File dataFile = getDataCsvFile();
+  public File getcsv(String filename) {
+    File configFile = null;
+    try {
+      configFile = File.createTempFile("country", ".csv");
 
-		CSVImporter importer = new CSVImporter(configFile.getAbsolutePath(), dataFile.getAbsolutePath());
-		importer.run();
-		// importer.run(new ImportTask() {
-		// @Override
-		// public void configure() throws IOException {
-		// input("[country]", new File(getcsv("country1.csv").getAbsolutePath()));
-		// input("[sale.order]", new File(getcsv("order1.csv").getAbsolutePath()));
-		// }
-		// });
-		response.setFlash("call csv import");
-	}
+      InputStream bindFileInputStream =
+          this.getClass().getResourceAsStream("/data-demo/input/" + filename);
+      FileOutputStream outputStream = new FileOutputStream(configFile);
+
+      IOUtils.copy(bindFileInputStream, outputStream);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return configFile;
+  }
+
+  public String getDataCsv() {
+
+    URL url = this.getClass().getResource("/data-demo/input/");
+    return url.getPath();
+  }
+
+  public void importCsvData(ActionRequest request, ActionResponse response) throws IOException {
+
+    File configFile = getConfigXmlFile();
+    File dataFile = getDataCsvDir();
+
+    CSVImporter importer = new CSVImporter(configFile.getAbsolutePath(), getDataCsv());
+    importer.run();
+    response.setFlash("call csv import");
+  }
+
+  public void importOrderdata(ActionRequest request, ActionResponse response) throws IOException {
+    File configFile = getXmlFile();
+    File dataFile = getDataCsvDir();
+
+    CSVImporter importer =
+        new CSVImporter(configFile.getAbsolutePath(), dataFile.getAbsolutePath());
+
+    importer.run(
+        new ImportTask() {
+          @Override
+          public void configure() throws IOException {
+            input("[country]", new File(getcsv("country1.csv").getAbsolutePath()));
+            input("[sale.order]", new File(getcsv("order1.csv").getAbsolutePath()));
+          }
+        });
+    response.setFlash("call order csv import");
+  }
 }

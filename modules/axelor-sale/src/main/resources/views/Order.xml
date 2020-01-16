@@ -4,6 +4,10 @@
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
 
   <grid name="order-grid" title="Orders" model="com.axelor.sale.db.Order">
+  <toolbar>
+  <button name="ImportOrder" icon="fa-print" title="Import" onClick="com.axelor.csv.web.SaleOrderController:importOrderdata"/>
+  <button name="productCategoryBtn" title="CategoryWise Report" icon="fa-print" onClick="action-category-report-show-product-category"/>
+  </toolbar>
     <field name="name" />
     <field name="customer" />
     <field name="orderDate" />
@@ -13,6 +17,8 @@
 
   <form name="order-form" title="Order" model="com.axelor.sale.db.Order"
     onSave="com.axelor.sale.web.SaleOrderController:setAmount">
+    <toolbar>
+    <button name="printBtn" title="Report" icon="fa-print" onClick="action-order-report-show-order"/></toolbar>
     <panel>
       <field name="status" widget="nav-select" readonly="true" />
     </panel>
@@ -82,7 +88,6 @@
       if="#{!btnCancel}" />
   </action-attrs>
 
-
   <action-method name="action.order.status.method.onclick.change.statusopen">
   <call class="com.axelor.sale.web.SaleOrderController" method="chekstatus"/>
   </action-method>
@@ -102,5 +107,12 @@
    <action-export name="export.sale.order" output="${name}/${date}${time}" download="true">
     <export name="${name}.xml" template="data-export/export-sale-order.st"/>
   </action-export>
+
+  <action-report output="saleOrder-${date}${time}" name="action-order-report-show-order" design="saleOrder.rptdesign">
+  <param name="orderId" expr="eval:id"/>
+  </action-report>
+  
+  <action-report output="saleCategory-${date}${time}" name="action-category-report-show-product-category" design="saleCategory.rptdesign">
+  </action-report>
 
 </object-views>

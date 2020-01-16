@@ -9,6 +9,7 @@
   </grid>
 
    <form name="project-form" title="Project" model="com.axelor.project.db.Project" onSave="action-validate-form" onNew="action.project.on.new">
+
     <panel title="Overview">
       <field name="name"/>
       <field name="priority"/>
@@ -47,5 +48,4 @@
   <field name="user" expr="eval:__user__"/>
   <field name="priority" expr="1"/>
  </action-record>
-
 </object-views>

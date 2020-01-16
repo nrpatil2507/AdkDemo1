@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<csv-inputs xmlns="http://axelor.com/xml/ns/data-import"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/data-import
+  http://axelor.com/xml/ns/data-import/data-import_5.2.xsd">
+
+
+  <input file="Country.csv" type="com.axelor.contact.db.Country"/>
+
+  <input file="titles.csv" type="com.axelor.contact.db.Title">
+        <header>code,name</header>
+        <bind to="code" column="code"></bind>
+        <bind to="name" column="name"></bind>
+   </input>
+
+   <input file="circle.csv" type="com.axelor.contact.db.Circle" search="self.code = :code">
+        <bind to="code" column="code"></bind>
+        <bind to="name" column="name"></bind>
+   </input>
+
+    <input file="circle2.csv" type="com.axelor.contact.db.Circle" search="self.code = :code" update="false">
+        <bind to="code" column="code"></bind>
+        <bind to="name" column="name" if-empty="true"></bind>
+   </input>
+
+   <input file="contact.csv" type="com.axelor.contact.db.Person" separator="\t">
+   <bind to="firstName" column="firstName"></bind>
+   <bind to="lastName" column="lastName"></bind>
+    <bind to="fullName" eval='"${firstName} ${lastName}"'></bind>
+   </input>
+
+   <input file="customer.csv" type="com.axelor.sale.db.Customer">
+   <bind to="email" eval='"${firstName}${lastName}@gmail.com"'></bind>
+   </input>
+
+    <input file="order.csv" type="com.axelor.sale.db.Order" call="com.axelor.csv.web.SaleOrderController:setTotalAmount">
+
+        <!-- transform boolean value into 'true' or 'false' -->
+        <bind column="confirmed" to="confirmed"
+            eval="confirmed ==~ /^(T|Y|1)$/ ? 'true' : 'false'"/>
+
+        <bind column="date" to="orderDate"/>
+        <bind column="date" to="createDate"/>
+
+        <!-- default value provided with eval expression -->
+        <bind to="confirmDate" eval="new org.joda.time.LocalDate()"/>
+
+        <bind to="customer" search="self.email = :email" if="!email.empty">
+            <bind column="firstName" to="firstName"/>
+            <bind column="lastName" to="lastName"/>
+            <bind column="email" to="email"/>
+        </bind>
+
+        <bind to="customer" if="email.empty">
+            <bind column="firstName" to="firstName"/>
+            <bind column="lastName" to="lastName"/>
+            <bind to="email" eval='"${firstName}.${lastName}@gmail.com".toLowerCase()'/>
+        </bind>
+
+        <bind to="items">
+            <bind column="q1" to="totalQuantity"/>
+            <bind column="r1" to="price"/>
+            <bind to="taxes" search="self.taxCode = :t11">
+             <bind to="taxCode" column="t11"/>
+              <bind to="taxName" column="t11"/>
+              <bind to="taxRate" column="tr1"/>
+             </bind>
+            <bind to="product" search="self.name = :p1">
+                <bind column="p1" to="name"/>
+                <bind column="p1" to="code"/>
+            </bind>
+      </bind>
+
+      <bind to="items">
+            <bind column="q2" to="totalQuantity"/>
+            <bind column="r2" to="price"/>
+             <bind to="taxes" search="self.taxCode = :t2">
+             <bind to="taxCode" column="t2"/>
+              <bind to="taxName" column="t2"/>
+              <bind to="taxRate" column="tr2"/>
+             </bind>
+
+            <bind to="product" search="self.name = :p2">
+                <bind column="p2" to="name"/>
+                <bind column="p2" to="code"/>
+            </bind>
+      </bind>
+      </input>
+
+  <input file="types.csv" type="com.axelor.sale.db.DateType">
+      <bind column="date" to="localDate" adapter="LocalDate"/>
+      <bind column="time" to="localTime" adapter="LocalTime"/>
+      <bind column="datetime" to="localDateTime" adapter="LocalDateTime"/>
+      <bind column="active" to="status" adapter="Myboolean"/>
+      <bind column="price" to="numberData" adapter="Number"/>
+  </input>
+
+  <input file="project.csv" type="com.axelor.project.db.Project"/>
+  <input file="employee.csv" type="com.axelor.project.db.ProjectEmployee">
+  <bind to="projectSet" column="project" search="self.name in :project" eval="project.split('\\|') as List"></bind>
+  </input>
+
+</csv-inputs>
