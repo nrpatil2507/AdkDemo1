@@ -95,11 +95,13 @@ public class Person extends AuditableModel {
 	@Access(AccessType.PROPERTY)
 	private String email;
 
+	private String phone;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Address> addresses;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Contact> contacts;
+	private List<Contact> phones;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Email> emails;
@@ -210,6 +212,14 @@ public class Person extends AuditableModel {
 		this.email = email;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public List<Address> getAddresses() {
 		return addresses;
 	}
@@ -264,16 +274,16 @@ public class Person extends AuditableModel {
 		}
 	}
 
-	public List<Contact> getContacts() {
-		return contacts;
+	public List<Contact> getPhones() {
+		return phones;
 	}
 
-	public void setContacts(List<Contact> contacts) {
-		this.contacts = contacts;
+	public void setPhones(List<Contact> phones) {
+		this.phones = phones;
 	}
 
 	/**
-	 * Add the given {@link Contact} item to the {@code contacts}.
+	 * Add the given {@link Contact} item to the {@code phones}.
 	 *
 	 * <p>
 	 * It sets {@code item.person = this} to ensure the proper relationship.
@@ -282,29 +292,29 @@ public class Person extends AuditableModel {
 	 * @param item
 	 *            the item to add
 	 */
-	public void addContact(Contact item) {
-		if (getContacts() == null) {
-			setContacts(new ArrayList<>());
+	public void addPhone(Contact item) {
+		if (getPhones() == null) {
+			setPhones(new ArrayList<>());
 		}
-		getContacts().add(item);
+		getPhones().add(item);
 		item.setPerson(this);
 	}
 
 	/**
-	 * Remove the given {@link Contact} item from the {@code contacts}.
+	 * Remove the given {@link Contact} item from the {@code phones}.
 	 *
  	 * @param item
 	 *            the item to remove
 	 */
-	public void removeContact(Contact item) {
-		if (getContacts() == null) {
+	public void removePhone(Contact item) {
+		if (getPhones() == null) {
 			return;
 		}
-		getContacts().remove(item);
+		getPhones().remove(item);
 	}
 
 	/**
-	 * Clear the {@code contacts} collection.
+	 * Clear the {@code phones} collection.
 	 *
 	 * <p>
 	 * If you have to query {@link Contact} records in same transaction, make
@@ -312,9 +322,9 @@ public class Person extends AuditableModel {
 	 * unexpected errors.
 	 * </p>
 	 */
-	public void clearContacts() {
-		if (getContacts() != null) {
-			getContacts().clear();
+	public void clearPhones() {
+		if (getPhones() != null) {
+			getPhones().clear();
 		}
 	}
 
@@ -459,6 +469,7 @@ public class Person extends AuditableModel {
 			.add("lastName", getLastName())
 			.add("fullName", getFullName())
 			.add("dateOfBirth", getDateOfBirth())
+			.add("phone", getPhone())
 			.omitNullValues()
 			.toString();
 	}

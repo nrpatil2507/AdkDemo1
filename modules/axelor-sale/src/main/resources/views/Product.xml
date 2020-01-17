@@ -14,6 +14,10 @@
   </selection>
 
   <grid name="product-grid" title="Products" model="com.axelor.sale.db.Product">
+  <toolbar>
+  <button name="prodcutDetailBtn" title="Product Detail Report" onClick="action-product-report-show-product-detail"/>
+  <button name="prodcutsaleBtn" title="YearWise Sale Prodcut Report" onClick="action-product-report-show-yearwise-sale-product"/>
+  </toolbar>
     <field name="name" />
     <field name="category" />
     <field name="color"/>
@@ -35,5 +39,13 @@
       <field name="notes" showTitle="false" colSpan="12" widget="html" />
     </panel>
   </form>
+  
+  <action-report output="Product-${date}${time}" name="action-product-report-show-product-detail" design="product_detail.rptdesign">
+  <param name="imageData" expr="/home/axelor/.axelor/attachments/"/>
+  </action-report>
+   
+  <action-report output="Product-${date}${time}" name="action-product-report-show-yearwise-sale-product" design="sale_report_yearwise.rptdesign">
+  
+  </action-report>
 
 </object-views>

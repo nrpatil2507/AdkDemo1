@@ -135,9 +135,10 @@
           <strong>{{address.street}} {{address.area}}</strong><br>
           {{address.city}}<span ng-if="address.state">, {{address.state}}</span><span ng-if="address.zip"> - {{address.zip}}</span><br>
           {{address.country.name}}<br>
-          <abbr ng-if="phone" title="Phone">P:</abbr> {{phone}}<br>
+          <abbr ng-if="phone" title="Phone">E:</abbr> {{phone}}<br>
           <abbr ng-if="email" title="Email">E:</abbr> {{email}}<br>
         </address>
+
       </div>
     ]]></template>
   </cards>

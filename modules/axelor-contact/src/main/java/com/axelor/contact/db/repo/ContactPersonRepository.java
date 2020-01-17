@@ -17,7 +17,6 @@ public class ContactPersonRepository extends PersonRepository {
       json.put("hasImage", contact.getImage() != null);
     } catch (Exception e) {
     }
-
     return json;
   }
 }

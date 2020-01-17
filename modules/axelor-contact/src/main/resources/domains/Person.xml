@@ -23,14 +23,12 @@
     return emails.get(0).getEmail();
     ]]></string>
 
-
-
+  	<string name="phone"> </string>
     <one-to-many name="addresses" ref="Address" mappedBy="person" />
-    <one-to-many name="contacts" ref="Contact" mappedBy="person"/>
+    <one-to-many name="phones" ref="Contact" mappedBy="person"/>
     <one-to-many name="emails" ref="Email" mappedBy="person" />
     <many-to-many name="circles" ref="Circle" />
     <many-to-one name="company" ref="Company" massUpdate="true"/>
-
 
     <finder-method name="findByName" using="fullName" />
     <finder-method name="findByEmail" using="email" />

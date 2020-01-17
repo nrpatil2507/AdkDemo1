@@ -8,10 +8,12 @@
 
   <entity name="Contact" cachable="true" sequential="true" table="contact">
     <many-to-one name="person" ref="Person" required="true" />
+    
     <string name="phonetype" required="true" max="255" selection="phone.type.selection" />
     <string name="service_provider" max="255" />
     <string name="contactno" min="10" max="11"/>
     <integer name="numberCnt"></integer>
+      <boolean name="primary" column="is_primary" />
   </entity>
 
 </domain-models>

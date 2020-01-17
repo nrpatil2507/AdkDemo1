@@ -31,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -41,11 +42,12 @@ import org.hibernate.annotations.Type;
 import com.axelor.auth.db.AuditableModel;
 import com.axelor.db.annotations.HashKey;
 import com.axelor.db.annotations.Widget;
+import com.axelor.meta.db.MetaFile;
 import com.google.common.base.MoreObjects;
 
 @Entity
 @Cacheable
-@Table(name = "SALE_PRODUCT", indexes = { @Index(columnList = "category") })
+@Table(name = "SALE_PRODUCT", indexes = { @Index(columnList = "image"), @Index(columnList = "category") })
 public class Product extends AuditableModel {
 
 	@Id
@@ -68,10 +70,8 @@ public class Product extends AuditableModel {
 	@Widget(selection = "product.color.selection")
 	private String color;
 
-	@Widget(image = true)
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	private byte[] image;
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private MetaFile image;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private ProductCategory category;
@@ -128,11 +128,11 @@ public class Product extends AuditableModel {
 		this.color = color;
 	}
 
-	public byte[] getImage() {
+	public MetaFile getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(MetaFile image) {
 		this.image = image;
 	}
 

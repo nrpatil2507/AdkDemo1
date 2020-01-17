@@ -7,6 +7,7 @@
   <toolbar>
   <button name="ImportOrder" icon="fa-print" title="Import" onClick="com.axelor.csv.web.SaleOrderController:importOrderdata"/>
   <button name="productCategoryBtn" title="CategoryWise Report" icon="fa-print" onClick="action-category-report-show-product-category"/>
+   <button name="productSaleBtn" title="ProductWise Highest Sale Report" icon="fa-print" onClick="action-product-report-show-highest-sale"/>
   </toolbar>
     <field name="name" />
     <field name="customer" />
@@ -18,7 +19,7 @@
   <form name="order-form" title="Order" model="com.axelor.sale.db.Order"
     onSave="com.axelor.sale.web.SaleOrderController:setAmount">
     <toolbar>
-    <button name="printBtn" title="Report" icon="fa-print" onClick="action-order-report-show-order"/></toolbar>
+    <button name="printBtn" title="Invoice" icon="fa-print" onClick="action-order-report-show-order"/></toolbar>
     <panel>
       <field name="status" widget="nav-select" readonly="true" />
     </panel>
@@ -55,7 +56,7 @@
       <field name="TotalAmount" min="0.00"></field>
     </panel-related>
 
-    <panel>
+    <panel title=":" css="panel-blue" icon="fa-calculator" >
       <field colOffset="10" name="totalQty" title="Total qty" readonly="true"/>
       <field colOffset="10" name="totalAmount" title="Total amount" readonly="true" />
     </panel>
@@ -111,8 +112,11 @@
   <action-report output="saleOrder-${date}${time}" name="action-order-report-show-order" design="saleOrder.rptdesign">
   <param name="orderId" expr="eval:id"/>
   </action-report>
-  
+
   <action-report output="saleCategory-${date}${time}" name="action-category-report-show-product-category" design="saleCategory.rptdesign">
+  </action-report>
+
+  <action-report output="saleProduct-${date}${time}" name="action-product-report-show-highest-sale" design="sale_products.rptdesign">
   </action-report>
 
 </object-views>

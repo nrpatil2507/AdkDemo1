@@ -22,6 +22,7 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -66,6 +67,9 @@ public class Contact extends AuditableModel {
 	private String contactno;
 
 	private Integer numberCnt = 0;
+
+	@Column(name = "is_primary")
+	private Boolean primary = Boolean.FALSE;
 
 	@Widget(title = "Attributes")
 	@Basic(fetch = FetchType.LAZY)
@@ -125,6 +129,14 @@ public class Contact extends AuditableModel {
 		this.numberCnt = numberCnt;
 	}
 
+	public Boolean getPrimary() {
+		return primary == null ? Boolean.FALSE : primary;
+	}
+
+	public void setPrimary(Boolean primary) {
+		this.primary = primary;
+	}
+
 	public String getAttrs() {
 		return attrs;
 	}
@@ -160,6 +172,7 @@ public class Contact extends AuditableModel {
 			.add("service_provider", getService_provider())
 			.add("contactno", getContactno())
 			.add("numberCnt", getNumberCnt())
+			.add("primary", getPrimary())
 			.omitNullValues()
 			.toString();
 	}
